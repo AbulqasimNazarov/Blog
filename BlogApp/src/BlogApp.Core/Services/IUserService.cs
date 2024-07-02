@@ -4,7 +4,8 @@ namespace BlogApp.Core.Services;
 
 public interface IUserService
 {
-     public User GetUserById(Guid id);   
+     public Task<User?> GetUserByIdAsync(int id); 
+     public Task CreateAsync(User user);
 }
 
 
