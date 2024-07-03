@@ -24,8 +24,7 @@ namespace BlogApp.Infrastructure.Repositories
         {
             var connection = new NpgsqlConnection(connectionString);
             await connection.ExecuteAsync(@"insert into Users
-                                    (Email, Name, Surname, Username)
-                                    values (@Email, @Name, @Surname, @Username)", user);
+                                    (Email, Name) values (@Email, @Name)", user);
         }
 
         public async Task<User?> GetByIdAsync(int id)
@@ -36,6 +35,15 @@ namespace BlogApp.Infrastructure.Repositories
             });
 
             return users.FirstOrDefault();
+        }
+
+        public async Task<bool> isSignedUp(User userToFind)
+        {
+            var connection = new NpgsqlConnection(connectionString);
+            var foundUsers = await connection.QueryAsync<User>(@"select * from Users where @Name = Name and @Email = Email", userToFind);
+            var isSignedUp = foundUsers.FirstOrDefault() is null ? false : true;
+
+            return isSignedUp;
         }
     }
 }

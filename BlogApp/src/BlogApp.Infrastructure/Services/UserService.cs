@@ -17,7 +17,7 @@ namespace BlogApp.Infrastructure.Services
         }
         public async Task CreateAsync(User user)
         {
-            if(user is null || user.Name is null || user.Surname is null || user.Username is null || user.Email is null)
+            if(user is null || user.Name is null || user.Email is null)
             {
                 throw new ArgumentNullException("user or property of the user contains null");
             }
@@ -27,7 +27,21 @@ namespace BlogApp.Infrastructure.Services
 
         public async Task<User?> GetUserByIdAsync(int id)
         {
+            if(id <= 0)
+            {
+                throw new ArgumentException("id can't be zero or below");
+            }
             return await repository.GetByIdAsync(id);
+        }
+
+        public async Task<bool> isSignedUp(User user)
+        {
+            if(user is null || user.Name is null || user.Email is null)
+            {
+                throw new ArgumentNullException("user or property of the user contains null");
+            }
+
+            return await repository.isSignedUp(user);
         }
     }
 }

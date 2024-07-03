@@ -9,10 +9,6 @@ public class User
     public int Id { get; set; }
     [Required]
     public string? Name { get; set; }
-    [Required]
-    public string? Surname { get; set; }
-    [Required]
-    public string? Username { get; set; }
     public string? AvatarUrl { get; set; }
     [ForeignKey("RoleId"), Required]
     public int RoleId { get; set; }

@@ -8,7 +8,7 @@ namespace BlogApp.Core.Models
 {
     public class Roles
     {
-        [Required, Key]
+        [Key]
         public int Id { get; set; }
         [Required]
         public string? Name { get; set; }

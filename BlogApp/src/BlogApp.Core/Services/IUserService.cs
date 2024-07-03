@@ -6,6 +6,7 @@ public interface IUserService
 {
      public Task<User?> GetUserByIdAsync(int id); 
      public Task CreateAsync(User user);
+     public Task<bool> isSignedUp(User user);
 }
 
 
