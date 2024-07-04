@@ -9,7 +9,7 @@ namespace BlogApp.Core.Services
     public interface IRoleService
     {
         public Task<Role?> GetByNameAsync(string name);
-        public Task Create(Role role);
+        public Task CreateAsync(Role role);
         public Task<Role?> IGetByIdAsync(int id);
     }
 }

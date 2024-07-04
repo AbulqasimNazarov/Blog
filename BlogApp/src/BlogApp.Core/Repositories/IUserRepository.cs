@@ -10,6 +10,6 @@ namespace BlogApp.Core.Repositories
 {
     public interface IUserRepository: ICreateAsync<User?>, IGetByIdAsync<User?>
     {      
-        public Task<User?> IsSignedUp(LoginDto user);
+        public Task<User?> IsSignedUpAsync(LoginDto user);
     }
 }

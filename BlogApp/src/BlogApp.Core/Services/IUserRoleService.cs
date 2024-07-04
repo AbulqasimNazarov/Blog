@@ -8,9 +8,9 @@ namespace BlogApp.Core.Services
 {
     public interface IUserRoleService
     {
-        public Task<IEnumerable<Role?>> GetAllRolesByUserId(int userId);
+        public Task<IEnumerable<Role?>> GetAllRolesByUserIdAsync(int userId);
         public Task ChangeAsync(int userId, Role role);
-        public Task Create(UserRole userRole);
-        public Task Delete(UserRole userRole);
+        public Task CreateAsync(UserRole userRole);
+        public Task DeleteAsync(UserRole userRole);
     }
 }

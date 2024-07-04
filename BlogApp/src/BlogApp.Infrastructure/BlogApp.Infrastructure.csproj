@@ -4,7 +4,7 @@
     <ProjectReference Include="..\BlogApp.Core\BlogApp.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
+   <ItemGroup>
     <PackageReference Include="Npgsql" Version="8.0.3" />
     <PackageReference Include="Dapper" Version="2.1.35" />
   </ItemGroup>

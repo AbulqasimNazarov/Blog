@@ -8,6 +8,7 @@ using BlogApp.Core.Repositories;
 using Dapper;
 using Npgsql;
 
+
 #pragma warning disable CS8613
 
 namespace BlogApp.Infrastructure.Repositories
@@ -37,13 +38,12 @@ namespace BlogApp.Infrastructure.Repositories
             return users.FirstOrDefault();
         }
 
-        public async Task<bool> isSignedUp(User userToFind)
+        public async Task<User?> IsSignedUpAsync(LoginDto userToFind)
         {
             var connection = new NpgsqlConnection(connectionString);
             var foundUsers = await connection.QueryAsync<User>(@"select * from Users where @Name = Name and @Email = Email", userToFind);
-            var isSignedUp = foundUsers.FirstOrDefault() is null ? false : true;
 
-            return isSignedUp;
+            return foundUsers.FirstOrDefault();
         }
     }
 }

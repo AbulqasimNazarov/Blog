@@ -6,8 +6,8 @@ namespace BlogApp.Core.Services;
 public interface IUserService
 {
      public Task<User?> GetUserByIdAsync(int id); 
-     public Task CreateAsync(User user);
-     public Task<User?> IsSignedUp(LoginDto user);
+     public Task CreateAsync(RegistrationDto user);
+     public Task<User?> IsSignedUpAsync(LoginDto user);
 }
 
 

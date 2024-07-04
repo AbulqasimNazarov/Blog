@@ -1,27 +1,37 @@
-var builder = WebApplication.CreateBuilder(args);
+using BlogApp.Core.Models;
+using BlogApp.Infrastructure.Repositories;
+using BlogApp.Infrastructure.Repositories.DapperRepositories;
 
-// Add services to the container.
+var rep = new UserDapperRepository("Server=blogpostgresqlserver.postgres.database.azure.com;Database=postgres;Port=5432;User Id=azureuser;Password=Password123!;Ssl Mode=Require;");
+var role = await rep.GetByIdAsync(1);
 
-builder.Services.AddControllersWithViews();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
-
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-app.UseRouting();
+    System.Console.WriteLine($"{role?.Id} = role?.Id");
 
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller}/{action=Index}/{id?}");
+// var builder = WebApplication.CreateBuilder(args);
 
-app.MapFallbackToFile("index.html");
+// // Add services to the container.
 
-app.Run();
+// builder.Services.AddControllersWithViews();
+
+// var app = builder.Build();
+
+// // Configure the HTTP request pipeline.
+// if (!app.Environment.IsDevelopment())
+// {
+//     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+//     app.UseHsts();
+// }
+
+// app.UseHttpsRedirection();
+// app.UseStaticFiles();
+// app.UseRouting();
+
+
+// app.MapControllerRoute(
+//     name: "default",
+//     pattern: "{controller}/{action=Index}/{id?}");
+
+// app.MapFallbackToFile("index.html");
+
+// app.Run();
