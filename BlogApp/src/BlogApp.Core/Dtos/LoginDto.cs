@@ -12,5 +12,6 @@ namespace BlogApp.Core.Dtos
         public string? Name { get; set; }
         [Required]
         public string? Email { get; set; }
+
     }
 }

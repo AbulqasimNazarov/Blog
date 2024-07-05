@@ -38,10 +38,20 @@ namespace BlogApp.Infrastructure.Repositories
             return users.FirstOrDefault();
         }
 
-        public async Task<User?> IsSignedUpAsync(LoginDto userToFind)
+        public async Task<User?> GetByEmailAsync(string email)
         {
             var connection = new NpgsqlConnection(connectionString);
-            var foundUsers = await connection.QueryAsync<User>(@"select * from Users where @Name = Name and @Email = Email", userToFind);
+            var users = await connection.QueryAsync<User>(@"select * from Users where @Email = email", new {
+                Email = email,
+            });
+
+            return users.FirstOrDefault();
+        }
+
+        public async Task<User?> GetSignedUpUser(LoginDto userToFind)
+        {
+            var connection = new NpgsqlConnection(connectionString);
+            var foundUsers = await connection.QueryAsync<User>(@"select * from Users where @Email = Email", userToFind);
 
             return foundUsers.FirstOrDefault();
         }
