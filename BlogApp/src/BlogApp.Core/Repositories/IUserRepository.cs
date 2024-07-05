@@ -8,8 +8,8 @@ using BlogApp.Core.Repositories.Base;
 
 namespace BlogApp.Core.Repositories
 {
-    public interface IUserRepository: ICreateAsync<User?>, IGetByIdAsync<User?>
+    public interface IUserRepository: ICreateAsync<User?>, IGetByIdAsync<User?>, IGetByEmailAsync<User?>
     {      
-        public Task<User?> IsSignedUpAsync(LoginDto user);
+        public Task<User?> GetSignedUpUser(LoginDto user);
     }
 }

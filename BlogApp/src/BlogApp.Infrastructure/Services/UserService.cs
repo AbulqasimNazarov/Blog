@@ -36,14 +36,19 @@ namespace BlogApp.Infrastructure.Services
             return await repository.GetByIdAsync(id);
         }
 
-        public async Task<User?> IsSignedUpAsync(LoginDto user)
+        public async Task<User?> GetUserByEmailAsync(string email)
+        {
+            return await repository.GetByEmailAsync(email);
+        }
+
+        public async Task<User?> GetSignedUpUser(LoginDto user)
         {
             if(user is null || user.Email is null)
             {
                 throw new ArgumentException("user must have an email to login");
             }
 
-            return await repository.IsSignedUpAsync(user);
+            return await repository.GetSignedUpUser(user);
         }
     }
 }
