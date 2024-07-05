@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using BlogApp.Core.Dtos;
 using BlogApp.Core.Models;
 using BlogApp.Core.Repositories;
 using BlogApp.Core.Services;
@@ -10,38 +12,38 @@ namespace BlogApp.Infrastructure.Services
 {
     public class UserService : IUserService
     {
-        private IUserRepository repository;
+        private readonly IUserRepository repository;
+
         public UserService(IUserRepository repository)
         {
             this.repository = repository;
         }
-        public async Task CreateAsync(User user)
+        public async Task CreateAsync(RegistrationDto user)
         {
-            if(user is null || user.Name is null || user.Email is null)
+            if(user is null || user.Email is null)
             {
-                throw new ArgumentNullException("user or property of the user contains null");
+                throw new ArgumentException("user must have an email");
             }
 
-            await repository.CreateAsync(user);
+            await repository.CreateAsync(new User(){
+                Email = user.Email,
+                Name = user.Name,
+            });
         }
 
         public async Task<User?> GetUserByIdAsync(int id)
         {
-            if(id <= 0)
-            {
-                throw new ArgumentException("id can't be zero or below");
-            }
             return await repository.GetByIdAsync(id);
         }
 
-        public async Task<bool> isSignedUp(User user)
+        public async Task<User?> IsSignedUpAsync(LoginDto user)
         {
-            if(user is null || user.Name is null || user.Email is null)
+            if(user is null || user.Email is null)
             {
-                throw new ArgumentNullException("user or property of the user contains null");
+                throw new ArgumentException("user must have an email to login");
             }
 
-            return await repository.isSignedUp(user);
+            return await repository.IsSignedUpAsync(user);
         }
     }
 }
