@@ -10,7 +10,7 @@ namespace BlogApp.Core.Repositories
     public interface IBlogRepository: ICreateAsync<Blog>, IGetByIdAsync<Blog?>
     {   
         public Task<IEnumerable<Blog?>> GetAllByUserId(int userId);
-        public Task<IEnumerable<Blog?>> GetAllByTopic(Topic topic);
+        public Task<IEnumerable<Blog?>> GetAllByTopicId(int topicId);
         public Task<IEnumerable<Blog?>> GetAllByName(string name);
         
     }

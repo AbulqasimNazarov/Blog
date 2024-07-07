@@ -11,7 +11,7 @@ namespace BlogApp.Core.Services
         public Task CreateBlogAsync(Blog blog);
         public Task<Blog?> GetBlogByIdAsync(int id);
         public Task<IEnumerable<Blog?>> GetAllBlogsByUserId(int userId);
-        public Task<IEnumerable<Blog?>> GetAllBlogsByTopic(Topic topic);
+        public Task<IEnumerable<Blog?>> GetAllBlogsByTopicId(int topicId);
         public Task<IEnumerable<Blog?>> GetAllBlogsByName(string name);
     }
 }
