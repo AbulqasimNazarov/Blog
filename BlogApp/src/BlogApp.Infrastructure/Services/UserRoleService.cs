@@ -20,7 +20,7 @@ namespace BlogApp.Infrastructure.Services
         {
             if(role is null || role.Name is null)
             {
-                throw new ArgumentException("role must have a name");
+                throw new ArgumentNullException("role must have a name");
             }
 
             await repository.ChangeAsync(userId, role);
@@ -30,7 +30,7 @@ namespace BlogApp.Infrastructure.Services
         {
             if(userRole is null)
             {
-                throw new ArgumentException("userRole must contain something");
+                throw new ArgumentNullException("userRole must contain something");
             }
 
             await repository.CreateAsync(userRole);
@@ -40,7 +40,7 @@ namespace BlogApp.Infrastructure.Services
         {
             if(userRole is null)
             {
-                throw new ArgumentException("userRole must contain something");
+                throw new ArgumentNullException("userRole must contain something");
             }
 
             await repository.DeleteAsync(userRole);
