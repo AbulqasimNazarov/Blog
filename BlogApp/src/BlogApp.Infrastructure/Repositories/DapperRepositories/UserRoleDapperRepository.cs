@@ -26,18 +26,20 @@ namespace BlogApp.Infrastructure.Repositories.DapperRepositories
         {
             var connection = new NpgsqlConnection(connectionString);
             await connection.ExecuteAsync(@"insert into UserRoles
-                                    (UserId, RoleId) values (@UserId, RoleId)", userRole);
+                                    (UserId, RoleId) values (@UserId, @RoleId)", userRole);
         }
 
-        public Task DeleteAsync(UserRole entity)
+        public async Task DeleteAsync(UserRole userRole)
         {
-            throw new NotImplementedException();
+            var connection = new NpgsqlConnection(connectionString);
+            await connection.ExecuteAsync(@"delete from UserRoles
+                                    where UserId = @UserId, RoleId = @RoleId)", userRole);
         }
 
         public async Task<IEnumerable<Role?>> GetAllRolesByUserIdAsync(int userId)
         {
             var connection = new NpgsqlConnection(connectionString);
-            var roles = await connection.QueryAsync<Role>(@"select R.Id, R.Name from Roles R join UserRoles U on U.RoleId = R.Id", new {
+            var roles = await connection.QueryAsync<Role>(@"select R.Id, R.Name from Roles R join UserRoles U on U.RoleId = R.Id where UserId = @UserId", new {
                 UserId = userId,
             });
 
