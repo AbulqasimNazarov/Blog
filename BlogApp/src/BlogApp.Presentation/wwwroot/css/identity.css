@@ -131,13 +131,14 @@ button.apple {
     color: #fff;
 }
 
-.offer button {
+.offer a {
     background-color: #000;
     color: #fff;
     width: 143px;
+    border-radius: 10px;
 }
 
-.offer button:hover {
+.offer a:hover {
     background-color: #fff;
     color: #000;
 }

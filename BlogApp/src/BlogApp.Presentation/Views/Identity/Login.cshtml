@@ -8,7 +8,7 @@
             <img src="../../Assets/IMG/LogoImg.png" alt="Logo" />
             <div class="identity-wrap">
                 <h2>Sign In</h2>
-                <form asp-action="Index" method="post">
+                <form asp-route="LoginEndPoint" method="post">
                     <label>Mail</label>
                     <input type="email" name="Mail" placeholder="Enter your mail" required />
                     <label>Name</label>
@@ -26,7 +26,7 @@
             <div class="offer">
                 <h1>Welcome to BLOG!</h1>
                 <p>“is a frequently updated web page used for personal commentary or business content.”</p>
-                <button>Get Started</button>
+                <a class="btn" href="/identity/Registration">Get Started</a>
             </div>
             <img src="../../Assets/IMG/identityItem_1.png" alt="" />
             <div class="Copyright">
