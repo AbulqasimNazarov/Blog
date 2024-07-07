@@ -1,0 +1,37 @@
+@{
+    ViewData["Title"] = "Sign In";
+}
+
+<div class="container">
+    <div class="login-wrapper">
+        <div class="left-panel">
+            <img src="../../Assets/IMG/LogoImg.png" alt="Logo" />
+            <div class="login-wrap">
+                <h2>Sign In</h2>
+                <form asp-action="Index" method="post">
+                    <label>Mail</label>
+                    <input type="email" name="Mail" placeholder="Enter your mail" required />
+                    <label>Password</label>
+                    <input type="password" name="Password" placeholder="Enter your password" required />
+                    <button class="submit-btn" type="submit">Sign In</button>
+                </form>
+                <div class="social-login">
+                    <button class="google">Sign in with Google</button>
+                    <button class="facebook">Sign in with Facebook</button>
+                    <button class="apple">Sign in with Apple</button>
+                </div>
+            </div>
+        </div>
+        <div class="right-panel">
+            <div class="offer">
+                <h1>Welcome to BLOG!</h1>
+                <p>“is a frequently updated web page used for personal commentary or business content.”</p>
+                <button>Get Started</button>
+            </div>
+            <img src="../../Assets/IMG/loginItem.png" alt="" />
+            <div class="Copyright">
+                <div>Copyright © 2023</div>
+            </div>
+        </div>
+    </div>
+</div>
