@@ -17,6 +17,8 @@ namespace BlogApp.Core.Models
         public string? Text { get; set; }
         [ForeignKey("TopicId"), Required]
         public int? TopicId { get; set; }
+        [ForeignKey("UserId"), Required]
+        public int? UserId { get; set; }
         [Required]
         public string? PictureUrl { get; set; } 
     }
