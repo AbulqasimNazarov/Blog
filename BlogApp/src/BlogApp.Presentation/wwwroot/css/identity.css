@@ -80,7 +80,7 @@ button:hover {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-top: 100px;
+    margin-top: 80px;
 }
 
 .social-identity button {
@@ -171,4 +171,46 @@ button.apple {
 
 .right-panel .registr-img {
     margin-top: -270px;
+}
+
+.confirmation-left-panel {
+    background-color: #fff;
+    color: #000;
+}
+
+.inbox {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    flex-direction: column;
+    margin-top: -60px;
+}
+
+.inbox img {
+    margin-bottom: 20px;
+}
+
+
+.inbox h1 {
+    font-family: 'Familjen Grotesk', sans-serif;
+    font-size: 92px;
+    font-weight: 700;
+}
+
+.confirmation-offer {
+    margin-left: 54px;
+    margin-top: 20px;
+}
+
+.confirmation-offer h1 {
+    color: #fff;
+    font-size: 60px;
+    font-weight: 700;
+    margin-top: 50px;
+}
+
+.confirmation-right-panel img {
+    margin-top: -200px;
 }
