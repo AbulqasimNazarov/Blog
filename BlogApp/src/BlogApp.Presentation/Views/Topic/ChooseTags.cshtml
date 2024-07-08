@@ -1,0 +1,48 @@
+@model IEnumerable<BlogApp.Core.Models.Topic>
+
+@{
+    ViewData["Title"] = "Choose Tags";
+
+    @* var testTopics = new List<Topic>
+    {
+        new Topic { Id = 1, Name = "Film" },
+        new Topic { Id = 2, Name = "Design" },
+        new Topic { Id = 3, Name = "Data Science" },
+        new Topic { Id = 4, Name = "Film" },
+        new Topic { Id = 5, Name = "Design" },
+        new Topic { Id = 6, Name = "Data Science" },
+        new Topic { Id = 7, Name = "Film" },
+        new Topic { Id = 8, Name = "Film" },
+        new Topic { Id = 9, Name = "Design" },
+        new Topic { Id = 10, Name = "Data Science" },
+    }; *@
+}
+
+<div class="container">
+    <div class="wrapper">
+        <header class="header">
+            <img src="../../Assets/IMG/LogoImg.png" alt="Logo" />
+        </header>
+        <main class="main-content">
+            <h2>What are you interested in?</h2>
+            <p>Choose three or more.</p>
+            <div class="topics">
+                @if (Model != null)
+                {
+                    foreach (var topic in Model)
+                    {
+                        <button class="topic-button">@topic.Name</button>
+                    }
+                }
+                else
+                {
+                    <p>No topics available.</p>
+                }
+            </div>
+            <button class="next-button">Next</button>
+        </main>
+        <div class="Copyright tegs-copyright">
+            <div>Copyright © 2023</div>
+        </div>
+    </div>
+</div>

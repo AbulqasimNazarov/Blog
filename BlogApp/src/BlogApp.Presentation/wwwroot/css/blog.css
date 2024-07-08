@@ -1,0 +1,74 @@
+.wrapper {
+    background-color: black;
+    color: #fff;
+    height: 100vh;
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.header {
+    padding: 20px;
+    text-align: start;
+}
+
+.main-content {
+    flex: 1;
+    padding: 20px;
+    display: inline-block;
+}
+
+.main-content h2 {
+    margin-top: 20px;
+    font-size: 2em;
+    font-family: 'Familjen Grotesk';
+    font-size: 60px;
+    font-weight: 700;
+}
+
+.main-content p {
+    margin: 10px 0 20px;
+    font-size: 1.2em;
+    font-size: 24px;
+    font-weight: 400;
+}
+
+.topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1px;
+    width: 1220px;
+}
+
+.topic-button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: 2px solid #ffffff;
+    border-radius: 25px;
+    background-color: #fff;
+    color: #000;
+    cursor: pointer;
+    margin: 5px;
+    white-space: nowrap;
+}
+
+.next-button {
+    background-color: #fff;
+    color: #111;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 40px;
+    font-size: 1.2em;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+
+.tegs-copyright {
+    color: #9BD21C;
+}
