@@ -1,0 +1,40 @@
+@{
+    ViewData["Title"] = "Sign Up";
+}
+
+<div class="container">
+    <div class="identity-wrapper">
+        <div class="left-panel">
+            <img src="../../Assets/IMG/LogoImg.png" alt="Logo" />
+            <div class="identity-wrap">
+                <h2>Create Account!</h2>
+                <form asp-route="RegistrationEndpoint" method="post">
+                    <label>Name</label>
+                    <input type="name" name="Name" placeholder="Enter your name" required />
+                    <label>Mail</label>
+                    <input type="email" name="Mail" placeholder="Enter your mail" required />
+                    <button class="submit-btn" type="submit">Create Account</button>
+                </form>
+                <div class="social-identity">
+                    <button class="google">Sign up with Google</button>
+                    <button class="facebook">Sign up with Facebook</button>
+                    <button class="apple">Sign up with Apple</button>
+                </div>
+                <div class="policy">
+                    <span>
+                        By signing up,you agree to our Teams of Service and acknowledge that our Privacy Policy applies to you.
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="right-panel">
+            <div class="offer registr-offer">
+                <h1>What's<br>on<br>my<br>mind<br>today?</h1>
+            </div>
+            <img class="registr-img" src="../../Assets/IMG/identityItem_2.png" alt="" />
+            <div class="Copyright">
+                <div>Copyright © 2023</div>
+            </div>
+        </div>
+    </div>
+</div>
