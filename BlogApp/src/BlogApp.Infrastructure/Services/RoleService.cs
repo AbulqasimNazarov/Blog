@@ -20,7 +20,7 @@ namespace BlogApp.Infrastructure.Services
         {
             if(role is null || role.Name is null)
             {
-                throw new ArgumentException("role must have a name");
+                throw new ArgumentNullException("role must have a name");
             }
 
             await repository.CreateAsync(role);
@@ -30,7 +30,7 @@ namespace BlogApp.Infrastructure.Services
         {
             if(name is null)
             {
-                throw new ArgumentException("name must contain something");
+                throw new ArgumentNullException("name must contain something");
             }
 
             return await repository.GetByNameAsync(name);
