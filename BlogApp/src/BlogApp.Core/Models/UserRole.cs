@@ -14,7 +14,7 @@ namespace BlogApp.Core.Models
         [ForeignKey("RoleId"), Required]
         public int RoleId { get; set; }
         public Role? Role { get; set; }
-        [ForeignKey("RoleId"), Required]
+        [ForeignKey("UserId"), Required]
         public int UserId { get; set; }
         public User? User { get; set; }
     }

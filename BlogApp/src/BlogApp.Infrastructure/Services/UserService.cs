@@ -22,7 +22,7 @@ namespace BlogApp.Infrastructure.Services
         {
             if(user is null || user.Email is null)
             {
-                throw new ArgumentException("user must have an email");
+                throw new ArgumentNullException("user must have an email");
             }
 
             await repository.CreateAsync(new User(){
@@ -45,7 +45,7 @@ namespace BlogApp.Infrastructure.Services
         {
             if(user is null || user.Email is null)
             {
-                throw new ArgumentException("user must have an email to login");
+                throw new ArgumentNullException("user must have an email to login");
             }
 
             return await repository.GetSignedUpUser(user);
