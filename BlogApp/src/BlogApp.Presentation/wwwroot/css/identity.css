@@ -64,6 +64,9 @@ button {
     color: #000000;
     cursor: pointer;
     transition: background-color 0.6s ease;
+}
+
+.identity-wrapper button {
     width: 405px;
     height: 44px;
 }
