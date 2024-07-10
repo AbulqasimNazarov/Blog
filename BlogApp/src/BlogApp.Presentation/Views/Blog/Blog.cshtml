@@ -1,0 +1,128 @@
+@model BlogApp.Core.ViewModel.BlogViewModel
+
+
+@{
+    ViewData["Title"] = "Blog";
+
+    @* var blogs = new List<Blog>
+    {
+        new Blog { Id = 1, Title = "The Hidden Treasure of the Paris Opera", Text = "Lorem ipsum dolor sit amet.", TopicId = 1, UserId = 1, PictureUrl = "/images/blog1.jpg" },
+        new Blog { Id = 2, Title = "Kapoor and Me, Now and Then", Text = "Lorem ipsum dolor sit amet.", TopicId = 2, UserId = 2, PictureUrl = "/images/blog2.jpg" },
+        new Blog { Id = 3, Title = "Effeti della Peste-Zumbo", Text = "Lorem ipsum dolor sit amet.", TopicId = 3, UserId = 3, PictureUrl = "/images/blog3.jpg" },
+        new Blog { Id = 4, Title = "DebiPokkho – The Des...", Text = "Lorem ipsum dolor sit amet.", TopicId = 4, UserId = 4, PictureUrl = "/images/blog4.jpg" }
+    };
+
+        var testTopics = new List<Topic>
+    {
+        new Topic { Id = 1, Name = "Film" },
+        new Topic { Id = 2, Name = "Design" },
+        new Topic { Id = 3, Name = "Data Science" },
+        new Topic { Id = 4, Name = "Film" },
+        new Topic { Id = 5, Name = "Design" },
+        new Topic { Id = 6, Name = "Data Science" },
+        new Topic { Id = 7, Name = "Film" },
+        new Topic { Id = 8, Name = "Film" },
+        new Topic { Id = 9, Name = "Design" },
+        new Topic { Id = 10, Name = "Data Science" },
+    }; *@
+
+}
+
+<div class="blog-page">
+    <div class="header">
+        <div class="header-block left-side">
+            <img src="../../Assets/IMG/LogoImg.png" alt="Logo" />
+            <div class="search-container">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search">
+                    <button type="submit">
+                        <img src="../../Assets/IMG/search-icon.png" alt="Search">
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="header-block right-side">
+            <div id="addBlogButton" class="add-blog add-blog-button">
+                
+                <a href="#">
+                    <img src="../../Assets/IMG/Plus.png" alt="Plus">
+                    Add blog
+                </a>
+            </div>
+            <div id="addBlogModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h2>Add Blog</h2>
+                    <form class="addBlogForm" method="post" action="/Blog/Add">
+                        <div class="blog-picture">
+                            <label class="blog-picture-title" for="pictureUrl">Add picture:</label>
+                            <div class="custom-file">
+                                <input type="file" name="Picture" class="custom-file-input">
+                                <label class="custom-file-label" for="picture">Choose file</label>
+                            </div>
+                        </div>
+                        <div class="blog-title">
+                            <label for="title">Title:</label>
+                            <input type="text" class="input-title" name="Title" required>
+                        </div>
+                        <div class="blog-topic">
+                            <label for="topicId">Topic:</label>
+                            <select class="topicId" name="TopicId" required>
+                                @if (base.Model != null) {
+                                    @foreach (var topic in base.Model.Topics)
+                                    {
+                                        <option value="@topic.Id">@topic.Name</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="blog-text">
+                            <label for="text">Text:</label>
+                            <textarea name="Text" required></textarea>
+                        </div>
+                        <button type="submit">Add Blog</button>
+                    </form>
+                </div>
+            </div>
+            <div class="icons">
+                <a href="#">
+                    <img src="../../Assets/IMG/ChatCircleDots.png" alt="">
+                </a>
+                <a href="#">
+                    <img src="../../Assets/IMG/Export.png" alt="">
+                </a>
+            </div>
+            <div class="profile">
+                <a href="#">
+                    <img src="../../Assets/IMG/profile_image.png" alt="profile">
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="menu" id="menu">
+        <div class="menu-content menu-items dragscroll">
+            @if (base.Model != null) {
+            @foreach (var topic in base.Model.Topics)
+                {
+                    <a class="menu-item" href="#">@topic.Name</a>
+                }
+            }
+        </div>
+    </div>
+
+    <div class="blog-list">
+        @if (base.Model != null) {
+            @foreach (var blog in base.Model.Blogs)
+            {
+                <a href="#">
+                    <div class="blog-item">
+                        <div class="content">
+                            <div class="title">@blog.Title</div>
+                        </div>
+                        <img class="blog-img" src="@blog.PictureUrl">
+                    </div>
+                </a>
+            }
+        }
+    </div>
+</div>
