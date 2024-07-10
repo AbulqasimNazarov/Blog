@@ -5,5 +5,5 @@ using BlogApp.Core.Topic.Models;
 public interface ITopicService
 {
     public Task<Topic?> GetByIdAsync(int id);
-    public Task<Topic?> GetAllTopicsAsync();
+    public Task<IEnumerable<Topic?>> GetAllTopicsAsync();
 }

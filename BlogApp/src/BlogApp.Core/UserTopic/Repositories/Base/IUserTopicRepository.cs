@@ -1,4 +1,4 @@
-namespace BlogApp.Core.Repositories.Base;
+namespace BlogApp.Core.UserTopic.Repositories.Base;
 
 using BlogApp.Core.UserTopic.Models;
 using BlogApp.Core.Topic.Models;

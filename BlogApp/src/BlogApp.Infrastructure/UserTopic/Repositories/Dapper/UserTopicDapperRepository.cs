@@ -1,14 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using BlogApp.Core.Models;
-using BlogApp.Core.Repositories;
 using Dapper;
 using Npgsql;
 
-namespace BlogApp.Infrastructure.Repositories.DapperRepositories;
+namespace BlogApp.Infrastructure.UserTopic.Repositories.Dapper;
+
+using BlogApp.Core.UserTopic.Repositories.Base;
+using BlogApp.Core.UserTopic.Models;
+using BlogApp.Core.Topic.Models;
 
 public class UserTopicDapperRepository : IUserTopicRepository
 {

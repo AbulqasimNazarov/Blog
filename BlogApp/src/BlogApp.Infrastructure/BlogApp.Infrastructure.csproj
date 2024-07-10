@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <ItemGroup>
-    <ProjectReference Include="..\BlogApp.Core\BlogApp.Core.csproj" />
-  </ItemGroup>
-
    <ItemGroup>
     <PackageReference Include="Npgsql" Version="8.0.3" />
     <PackageReference Include="Dapper" Version="2.1.35" />
   </ItemGroup>
+
+   <ItemGroup>
+     <ProjectReference Include="..\BlogApp.Core\BlogApp.Core.csproj" />
+   </ItemGroup>
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>

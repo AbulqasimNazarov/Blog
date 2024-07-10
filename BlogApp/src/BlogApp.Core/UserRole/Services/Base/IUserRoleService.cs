@@ -1,4 +1,4 @@
-namespace BlogApp.Core.Services.Base;
+namespace BlogApp.Core.UserRole.Services.Base;
 
 using BlogApp.Core.UserRole.Models;
 using BlogApp.Core.Role.Models;
