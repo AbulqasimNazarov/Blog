@@ -1,13 +1,17 @@
 using BlogApp.Core.Repositories;
 using BlogApp.Core.Services;
-using BlogApp.Infrastructure.Services;
-using BlogApp.Infrastructure.Repositories.DapperRepositories;
 using BlogApp.Infrastructure.Repositories;
+using BlogApp.Infrastructure.Repositories.DapperRepositories;
+using BlogApp.Infrastructure.Services;
+using BlogApp.Presentation.Validators;
+using BlogApp.Presentation.Verification.Base;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using BlogApp.Presentation.Validators;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddEndpointsApiExplorer();
+// builder.Services.AddSwaggerGen();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -26,10 +30,18 @@ builder.Services.AddControllers().AddFluentValidation(fv => fv.RegisterValidator
 builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IUserRoleService, UserRoleService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddScoped<IRoleRepository, RoleDapperRepository>();
 builder.Services.AddScoped<IUserRoleRepository, UserRoleDapperRepository>();
 builder.Services.AddScoped<IUserRepository, UserDapperRepository>();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Identity/Login";
+        options.AccessDeniedPath = "/Identity/AccessDenied";
+    });
 
 var app = builder.Build();
 
@@ -37,7 +49,6 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -46,6 +57,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+
+// app.UseSwagger();
+// app.UseSwaggerUI();
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
