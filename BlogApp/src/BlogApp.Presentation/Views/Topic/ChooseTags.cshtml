@@ -27,9 +27,9 @@
             <h2>What are you interested in?</h2>
             <p>Choose three or more.</p>
             <div class="topics">
-                @if (Model != null)
+                @if (base.Model != null)
                 {
-                    foreach (var topic in Model)
+                    foreach (var topic in base.Model)
                     {
                         <button class="topic-button">@topic.Name</button>
                     }
