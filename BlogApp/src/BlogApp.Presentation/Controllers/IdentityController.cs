@@ -1,6 +1,6 @@
 using BlogApp.Core.Dtos;
-using BlogApp.Core.Models;
-using BlogApp.Core.Services;
+using BlogApp.Core.Dtos.Models;
+using BlogApp.Core.User.Services.Base;
 using BlogApp.Presentation.Verification.Base;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication;

@@ -1,18 +1,26 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using BlogApp.Presentation.Models;
-using BlogApp.Core.Models;
+using BlogApp.Core.Topic.Services.Base;
+
 
 namespace BlogApp.Presentation.Controllers;
 
 public class TopicController : Controller
 {
-    
-    [HttpGet]
-    public IActionResult ChooseTags()
+    private readonly ITopicService topicService;
+
+    public TopicController(ITopicService topicService)
     {
-        
-        return View();
+        this.topicService = topicService;
+    }
+
+    [HttpGet]
+    
+    public async Task<IActionResult> ChooseTags()
+    {
+        var topics = await topicService.GetAllTopicsAsync();
+        return View(topics);
     }
 
     
