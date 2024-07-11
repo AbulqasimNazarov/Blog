@@ -8,6 +8,7 @@ namespace BlogApp.Infrastructure.User.Repositories.Dapper;
 using BlogApp.Core.User.Repositories.Base;
 using BlogApp.Core.User.Models;
 using BlogApp.Core.Dtos.Models;
+using Microsoft.AspNetCore.Http;
 
 public class UserDapperRepository : IUserRepository
 {
@@ -17,7 +18,7 @@ public class UserDapperRepository : IUserRepository
         this.connectionString = connectionString;
     }
 
-    public async Task CreateAsync(User? user)
+    public async Task CreateAsync(User? user, IFormFile image)
     {
         var connection = new NpgsqlConnection(connectionString);
         await connection.ExecuteAsync(@"insert into Users

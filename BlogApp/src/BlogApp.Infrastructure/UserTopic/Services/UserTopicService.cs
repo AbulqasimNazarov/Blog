@@ -20,7 +20,7 @@ public class UserTopicService : IUserTopicService
             throw new ArgumentNullException("userTopic is null");
         }
 
-        await repository.CreateAsync(userTopic);
+        await repository.CreateAsync(userTopic, null);
     }
 
     public async Task DeleteTopicFromInterestAsync(UserTopic userTopic)

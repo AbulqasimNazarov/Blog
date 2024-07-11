@@ -6,6 +6,7 @@ namespace BlogApp.Infrastructure.UserRole.Repositories.Dapper;
 using BlogApp.Core.UserRole.Repositories.Base;
 using BlogApp.Core.UserRole.Models;
 using BlogApp.Core.Role.Models;
+using Microsoft.AspNetCore.Http;
 
 public class UserRoleDapperRepository : IUserRoleRepository
 {
@@ -20,7 +21,7 @@ public class UserRoleDapperRepository : IUserRoleRepository
         throw new NotImplementedException();
     }
 
-    public async Task CreateAsync(UserRole userRole)
+    public async Task CreateAsync(UserRole userRole, IFormFile image)
     {
         var connection = new NpgsqlConnection(connectionString);
         await connection.ExecuteAsync(@"insert into UserRoles
