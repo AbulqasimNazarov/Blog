@@ -30,7 +30,7 @@ public class UserRoleService : IUserRoleService
             throw new ArgumentNullException("userRole must contain something");
         }
 
-        await repository.CreateAsync(userRole);
+        await repository.CreateAsync(userRole, null);
     }
 
     public async Task DeleteAsync(UserRole userRole)

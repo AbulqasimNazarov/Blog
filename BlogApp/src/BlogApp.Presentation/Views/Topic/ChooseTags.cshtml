@@ -3,20 +3,23 @@
 @{
     ViewData["Title"] = "Choose Tags";
 
-    @* var testTopics = new List<Topic>
-    {
-        new Topic { Id = 1, Name = "Film" },
-        new Topic { Id = 2, Name = "Design" },
-        new Topic { Id = 3, Name = "Data Science" },
-        new Topic { Id = 4, Name = "Film" },
-        new Topic { Id = 5, Name = "Design" },
-        new Topic { Id = 6, Name = "Data Science" },
-        new Topic { Id = 7, Name = "Film" },
-        new Topic { Id = 8, Name = "Film" },
-        new Topic { Id = 9, Name = "Design" },
-        new Topic { Id = 10, Name = "Data Science" },
-    }; *@
 }
+
+
+<style>
+    .topic-button {
+        background-color: white;
+        border: 1px solid #ccc;
+        padding: 10px;
+        cursor: pointer;
+    }
+    
+    .topic-button.selected {
+        background-color: green;
+        color: white;
+    }
+</style>
+
 
 <div class="topic-page">
     <div class="container">
@@ -32,7 +35,7 @@
                     {
                         foreach (var topic in base.Model)
                         {
-                            <button class="topic-button">@topic.Name</button>
+                            <button class="topic-button" data-id="@topic.Id" onclick="toggleTopic(this)">@topic.Name</button>
                         }
                     }
                     else
@@ -40,7 +43,7 @@
                         <p>No topics available.</p>
                     }
                 </div>
-                <button class="next-button">Next</button>
+                <button class="next-button" onclick="submitSelectedTopics()">Next</button>
             </main>
             <div class="Copyright tegs-copyright">
                 <div>Copyright © 2023</div>
@@ -48,3 +51,39 @@
         </div>
     </div>
 </div>
+
+<script>
+    let selectedTopics = [];
+
+    function toggleTopic(button) {
+        const topicId = button.getAttribute('data-id');
+        if (selectedTopics.includes(topicId)) {
+            selectedTopics = selectedTopics.filter(id => id !== topicId);
+            button.classList.remove('selected');
+        } else {
+            selectedTopics.push(topicId);
+            button.classList.add('selected');
+        }
+    }
+
+    function submitSelectedTopics() {
+        if (selectedTopics.length >= 3) {
+            const form = document.createElement('form');
+            form.method = 'post';
+            form.action = '/Blog/FilterBlogsByTopics';
+
+            selectedTopics.forEach(id => {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'selectedTopicIds';
+                input.value = id;
+                form.appendChild(input);
+            });
+
+            document.body.appendChild(form);
+            form.submit();
+        } else {
+            alert('Please choose at least three topics.');
+        }
+    }
+</script>

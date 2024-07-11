@@ -3,6 +3,7 @@ namespace BlogApp.Infrastructure.Blog.Services;
 using BlogApp.Core.Blog.Services.Base;
 using BlogApp.Core.Blog.Repositories.Base;
 using BlogApp.Core.Blog.Models;
+using Microsoft.AspNetCore.Http;
 
 public class BlogService : IBlogService
 {
@@ -13,14 +14,14 @@ public class BlogService : IBlogService
         this.repository = repository;
     }
 
-    public async Task CreateBlogAsync(Blog blog)
+    public async Task CreateBlogAsync(Blog blog, IFormFile image)
     {
-        if(blog == null || blog.Text == null || blog.Title == null || blog.TopicId == null || blog.UserId == null)
+        if(blog == null || blog.Text == null || blog.Title == null || blog.TopicId == null)
         {
             throw new ArgumentNullException("blog cannot be created, some prop(s) is(are) null");
         }
 
-        await repository.CreateAsync(blog);
+        await repository.CreateAsync(blog, image);
     }
 
     public async Task<IEnumerable<Blog?>> GetAllBlogsByName(string name)
@@ -33,7 +34,7 @@ public class BlogService : IBlogService
         return await repository.GetAllByName(name);
     }
 
-    public async Task<IEnumerable<Blog?>> GetAllBlogsByTopicId(int topicId)
+    public async Task<IEnumerable<Blog?>> GetAllBlogsByTopicId(List<int> topicId)
     {
         return await repository.GetAllByTopicId(topicId);
     }

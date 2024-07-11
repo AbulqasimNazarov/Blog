@@ -23,7 +23,7 @@ public class UserService : IUserService
         await repository.CreateAsync(new User(){
             Email = user.Email,
             Name = user.Name,
-        });
+        }, null);
     }
 
     public async Task<User?> GetUserByIdAsync(int id)

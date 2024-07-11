@@ -1,3 +1,5 @@
+using BlogApp.Core.Blog.Repositories.Base;
+using BlogApp.Core.Blog.Services.Base;
 using BlogApp.Core.Role.Repositories.Base;
 using BlogApp.Core.Role.Services.Base;
 using BlogApp.Core.Topic.Repositories.Base;
@@ -6,6 +8,8 @@ using BlogApp.Core.User.Repositories.Base;
 using BlogApp.Core.User.Services.Base;
 using BlogApp.Core.UserRole.Repositories.Base;
 using BlogApp.Core.UserRole.Services.Base;
+using BlogApp.Infrastructure.Blog.Repositories.Dapper;
+using BlogApp.Infrastructure.Blog.Services;
 using BlogApp.Infrastructure.Role.Repositories.Dapper;
 using BlogApp.Infrastructure.Role.Services;
 using BlogApp.Infrastructure.Topic.Repositories.Dapper;
@@ -43,11 +47,13 @@ builder.Services.AddScoped<IUserRoleService, UserRoleService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<ITopicService, TopicService>();
+builder.Services.AddScoped<IBlogService, BlogService>();
 
 builder.Services.AddScoped<IRoleRepository, RoleDapperRepository>();
 builder.Services.AddScoped<IUserRoleRepository, UserRoleDapperRepository>();
 builder.Services.AddScoped<IUserRepository, UserDapperRepository>();
 builder.Services.AddScoped<ITopicRepository, TopicDapperRepository>();
+builder.Services.AddScoped<IBlogRepository, BlogDapperRepository>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>

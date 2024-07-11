@@ -5,6 +5,7 @@ namespace BlogApp.Infrastructure.Role.Repositories.Dapper;
 
 using BlogApp.Core.Role.Repositories.Base;
 using BlogApp.Core.Role.Models;
+using Microsoft.AspNetCore.Http;
 
 public class RoleDapperRepository : IRoleRepository
 {
@@ -13,7 +14,7 @@ public class RoleDapperRepository : IRoleRepository
     {
         this.connectionString = connectionString;
     }
-    public async Task CreateAsync(Role role)
+    public async Task CreateAsync(Role role, IFormFile image)
     {
         var connection = new NpgsqlConnection(connectionString);
         await connection.ExecuteAsync(@"insert into Roles
