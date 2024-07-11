@@ -1,74 +1,316 @@
-.wrapper {
-    background-color: black;
-    color: #fff;
-    height: 100vh;
-    text-align: center;
+.blog-page {
+    margin: 10px;
 }
 
-.container {
+
+
+.header-block {
     display: flex;
-    flex-direction: column;
-    min-height: 100vh;
 }
 
-.header {
-    padding: 20px;
-    text-align: start;
+.left-side img {
+    margin-right: 45px;
 }
 
-.main-content {
-    flex: 1;
-    padding: 20px;
-    display: inline-block;
+.add-blog {
+    margin-right: 30px;
 }
 
-.main-content h2 {
-    margin-top: 20px;
-    font-size: 2em;
-    font-family: 'Familjen Grotesk';
-    font-size: 60px;
-    font-weight: 700;
-}
-
-.main-content p {
-    margin: 10px 0 20px;
-    font-size: 1.2em;
+.add-blog a {
+    color: #fff;
+    text-decoration: none;
     font-size: 24px;
     font-weight: 400;
 }
 
-.topics {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1px;
-    width: 1220px;
+.icons img {
+    margin-right: 30px;
 }
 
-.topic-button {
-    display: inline-block;
-    padding: 10px 20px;
+.search-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.search-bar input {
+    border: none;
+    border-radius: 30px;
+    padding: 20px;
+    outline: none;
     font-size: 16px;
-    border: 2px solid #ffffff;
-    border-radius: 25px;
-    background-color: #fff;
-    color: #000;
+    width: 330px;
+    height: 5px;
+}
+
+.search-bar input:focus {
+    border: none;
+    outline: none;
+}
+
+.search-bar button {
+    background: none;
+    border: none;
+    padding: 10px;
     cursor: pointer;
-    margin: 5px;
+    outline: none;
+}
+
+.search-bar button img {
+    width: 20px;
+    height: 20px;
+    margin-left: -55px;
+    padding: 3px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #000;
+    margin-bottom: 30px;
+}
+
+.header .logo {
+    color: #9cfc00;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.menu {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 700px;
+    overflow-y: hidden;
+    padding: 10px;
+}
+
+.menu-items {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
     white-space: nowrap;
 }
 
-.next-button {
-    background-color: #fff;
-    color: #111;
-    border: none;
-    border-radius: 20px;
-    padding: 10px 40px;
-    font-size: 1.2em;
-    cursor: pointer;
-    margin-top: 20px;
-    transition: background-color 0.3s;
+.menu a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 30px;
+    margin-right: 34px;
+    display: flex;
+
 }
 
-.tegs-copyright {
-    color: #9BD21C;
+.menu-items::-webkit-scrollbar {
+    display: none;
+  }
+
+
+.menu a:last-child {
+    margin-left: 0;
+}
+
+.menu a:hover {
+    color: #9cfc00;
+}
+
+.blog-list {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.blog-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 10px;
+}
+
+.blog-item img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-right: 20px;
+}
+
+.blog-item .content {
+    flex: 1;
+}
+
+.blog-item .title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+}
+
+.blog-list a {
+    text-decoration: none;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+    padding-top: 60px;
+}
+
+.modal-content {
+    background-color: #000;
+    color: #fff;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    border-radius: 10px;
+}
+
+.modal-content h2 {
+    margin-bottom: 30px;
+}
+
+.close {
+    color: #fff;
+    text-align: end;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #aaa;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.addBlogForm {
+    max-width: 550px;
+}
+
+.custom-file {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    height: 2.5rem;
+}
+
+.custom-file-input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    opacity: 0;
+    cursor: pointer;
+    border-radius: 30px;
+}
+
+.custom-file-label {
+    display: inline-block;
+    width: 90%;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #F8F8F9;
+    background-color: #3f3f3f;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+.custom-file-input:focus ~ .custom-file-label {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.custom-file-input:valid ~ .custom-file-label::after {
+    content: "File chosen";
+    color: #F8F8F9;
+}
+
+.custom-file-label::after {
+    content: "Choose file";
+    color: #000;
+    background-color: #3f3f3f;
+    padding: 0.375rem 0.75rem;
+    margin-left: 1rem;
+    border-left: inherit;
+    border-radius: 0 0.25rem 0.25rem 0;
+}
+
+.input-title {
+    padding: 10px 20px;
+    width: 90%;
+    border-radius: 30px;
+}
+
+.blog-topic {
+    margin-bottom: 30px;
+}
+
+.blog-topic label {
+    margin-right: 30px;
+}
+
+.blog-topic select   {
+    background-color: #3f3f3f;
+    color: #fff;
+    border-radius: 20px;
+    padding: 3px 10px;
+}
+
+.blog-text {
+    display: flex;
+    margin-bottom: 30px;
+}
+
+.blog-text  label {
+    margin-right: 30px;
+}
+
+.blog-text  textarea {
+    width: 100%;
+    height: 100%;
+}
+
+.blog-title {
+    display: flex;
+    margin-bottom: 30px;
+}
+
+.blog-title label {
+    margin-right: 30px;
+}
+
+.blog-picture {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.blog-picture-title {
+    width: 140px;
+    margin-right: 30px;
 }

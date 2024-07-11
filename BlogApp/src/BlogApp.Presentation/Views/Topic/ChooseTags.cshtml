@@ -18,31 +18,33 @@
     }; *@
 }
 
-<div class="container">
-    <div class="wrapper">
-        <header class="header">
-            <img src="../../Assets/IMG/LogoImg.png" alt="Logo" />
-        </header>
-        <main class="main-content">
-            <h2>What are you interested in?</h2>
-            <p>Choose three or more.</p>
-            <div class="topics">
-                @if (base.Model != null)
-                {
-                    foreach (var topic in base.Model)
+<div class="topic-page">
+    <div class="container">
+        <div class="wrapper">
+            <header class="header">
+                <img src="../../Assets/IMG/LogoImg.png" alt="Logo" />
+            </header>
+            <main class="main-content">
+                <h2>What are you interested in?</h2>
+                <p>Choose three or more.</p>
+                <div class="topics">
+                    @if (base.Model != null)
                     {
-                        <button class="topic-button">@topic.Name</button>
+                        foreach (var topic in base.Model)
+                        {
+                            <button class="topic-button">@topic.Name</button>
+                        }
                     }
-                }
-                else
-                {
-                    <p>No topics available.</p>
-                }
+                    else
+                    {
+                        <p>No topics available.</p>
+                    }
+                </div>
+                <button class="next-button">Next</button>
+            </main>
+            <div class="Copyright tegs-copyright">
+                <div>Copyright © 2023</div>
             </div>
-            <button class="next-button">Next</button>
-        </main>
-        <div class="Copyright tegs-copyright">
-            <div>Copyright © 2023</div>
         </div>
     </div>
 </div>
