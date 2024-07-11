@@ -1,8 +1,19 @@
-using BlogApp.Core.Repositories;
-using BlogApp.Core.Services;
-using BlogApp.Infrastructure.Repositories;
-using BlogApp.Infrastructure.Repositories.DapperRepositories;
-using BlogApp.Infrastructure.Services;
+using BlogApp.Core.Role.Repositories.Base;
+using BlogApp.Core.Role.Services.Base;
+using BlogApp.Core.Topic.Repositories.Base;
+using BlogApp.Core.Topic.Services.Base;
+using BlogApp.Core.User.Repositories.Base;
+using BlogApp.Core.User.Services.Base;
+using BlogApp.Core.UserRole.Repositories.Base;
+using BlogApp.Core.UserRole.Services.Base;
+using BlogApp.Infrastructure.Role.Repositories.Dapper;
+using BlogApp.Infrastructure.Role.Services;
+using BlogApp.Infrastructure.Topic.Repositories.Dapper;
+using BlogApp.Infrastructure.Topic.Services;
+using BlogApp.Infrastructure.User.Repositories.Dapper;
+using BlogApp.Infrastructure.User.Services;
+using BlogApp.Infrastructure.UserRole.Repositories.Dapper;
+using BlogApp.Infrastructure.UserRole.Services;
 using BlogApp.Presentation.Validators;
 using BlogApp.Presentation.Verification.Base;
 using FluentValidation;
@@ -31,10 +42,12 @@ builder.Services.AddScoped<IRoleService, RoleService>();
 builder.Services.AddScoped<IUserRoleService, UserRoleService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<ITopicService, TopicService>();
 
 builder.Services.AddScoped<IRoleRepository, RoleDapperRepository>();
 builder.Services.AddScoped<IUserRoleRepository, UserRoleDapperRepository>();
 builder.Services.AddScoped<IUserRepository, UserDapperRepository>();
+builder.Services.AddScoped<ITopicRepository, TopicDapperRepository>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>

@@ -1,5 +1,6 @@
-using BlogApp.Core.Models;
+
 using BlogApp.Core.Dtos;
+using BlogApp.Core.Dtos.Models;
 using FluentValidation;
 
 
