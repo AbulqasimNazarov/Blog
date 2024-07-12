@@ -5,7 +5,7 @@ namespace BlogApp.Core.UserTopic.Data.Configurations;
 
 using BlogApp.Core.UserTopic.Models;
 
-public class UserGameConfiguration : IEntityTypeConfiguration<UserTopic>
+public class UserTopicConfiguration : IEntityTypeConfiguration<UserTopic>
 {
     public void Configure(EntityTypeBuilder<UserTopic> builder)
     {
