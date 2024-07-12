@@ -1,14 +1,11 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace BlogApp.Core.User.Models;
 
-public class User
+public class User : IdentityUser
 {
-    [Key]
-    public int Id { get; set; }
     [Required]
     public string? Name { get; set; }
     public string? AvatarUrl { get; set; }
-    [Required]
-    public string? Email { get; set; }
 }
