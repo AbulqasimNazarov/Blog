@@ -1,5 +1,4 @@
 #pragma warning disable CS1998
-#pragma warning disable CS8602
 
 namespace BlogApp.Infrastructure.UserTopic.Repositories.Ef_Core;
 
