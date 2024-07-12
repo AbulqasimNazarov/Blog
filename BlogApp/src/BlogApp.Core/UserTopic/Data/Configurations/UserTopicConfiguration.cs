@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace MyGames.Core.UserGame.Data.Configurations;
+namespace BlogApp.Core.UserTopic.Data.Configurations;
 
 using BlogApp.Core.UserTopic.Models;
 

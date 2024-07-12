@@ -17,7 +17,7 @@ public class TopicDapperRepository : ITopicRepository
 
     public async Task<IEnumerable<Topic?>> GetAllAsync()
     {
-        var connection = new NpgsqlConnection(connectionString);
+        using var connection = new NpgsqlConnection(connectionString);
         var topics = await connection.QueryAsync<Topic>(@"select * from Topics");
 
         return topics;
@@ -25,7 +25,7 @@ public class TopicDapperRepository : ITopicRepository
 
     public async Task<Topic?> GetByIdAsync(int id)
     {
-        var connection = new NpgsqlConnection(connectionString);
+        using var connection = new NpgsqlConnection(connectionString);
         var topics = await connection.QueryAsync<Topic>(@"select * from Topics where @Id = Id", new {
             Id = id,
         });
