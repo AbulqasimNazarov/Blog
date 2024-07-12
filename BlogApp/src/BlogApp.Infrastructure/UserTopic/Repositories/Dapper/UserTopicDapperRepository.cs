@@ -6,7 +6,6 @@ namespace BlogApp.Infrastructure.UserTopic.Repositories.Dapper;
 using BlogApp.Core.UserTopic.Repositories.Base;
 using BlogApp.Core.UserTopic.Models;
 using BlogApp.Core.Topic.Models;
-using Microsoft.AspNetCore.Http;
 
 public class UserTopicDapperRepository : IUserTopicRepository
 {
@@ -16,7 +15,7 @@ public class UserTopicDapperRepository : IUserTopicRepository
         this.connectionString = connectionString;
     }
 
-    public async Task CreateAsync(UserTopic userTopic, IFormFile image)
+    public async Task CreateAsync(UserTopic userTopic)
     {
         var connection = new NpgsqlConnection(connectionString);
         await connection.ExecuteAsync(@"insert into UserTopics
