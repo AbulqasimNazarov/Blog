@@ -1,8 +1,6 @@
 .blog-page {
-    margin: 10px;
+    margin: 25px 25px;
 }
-
-
 
 .header-block {
     display: flex;
@@ -38,6 +36,7 @@
     align-items: center;
     border-radius: 15px;
     overflow: hidden;
+    flex-direction: row;
 }
 
 .search-bar input {
@@ -74,14 +73,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px;
     background-color: #000;
     margin-bottom: 30px;
 }
 
 .header .logo {
     color: #9cfc00;
-    font-size: 24px;
     font-weight: bold;
 }
 
@@ -313,4 +310,8 @@
 .blog-picture-title {
     width: 140px;
     margin-right: 30px;
+}
+
+.menu-item.active {
+    color: #9BD21C;
 }

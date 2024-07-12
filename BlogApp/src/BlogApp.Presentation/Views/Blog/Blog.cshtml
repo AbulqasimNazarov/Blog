@@ -1,4 +1,4 @@
-@model BlogApp.Core.ViewModel.Models.BlogViewModel
+@model IEnumerable<BlogApp.Core.Topic.Models.Topic>
 
 @{
     ViewData["Title"] = "Blog";
@@ -7,14 +7,17 @@
 <div class="blog-page">
     <div class="header">
         <div class="header-block left-side">
-            <img src="~/Assets/IMG/LogoImg.png" alt="Logo" />
+            <div class="logo">
+                <img src="~/Assets/IMG/LogoImg.png" alt="Logo" />
+            </div>
             <div class="search-container">
-                <div class="search-bar">
-                    <input type="text" placeholder="Search">
+                <form id="searchForm" class="search-bar" method="get" action="/Blog/SearchBlogByTopic">
+                    <input type="text" name="query" placeholder="Search">
                     <button type="submit">
                         <img src="~/Assets/IMG/search-icon.png" alt="Search">
                     </button>
-                </div>
+                </form>
+
             </div>
         </div>
         <div class="header-block right-side">
@@ -44,7 +47,7 @@
                             <label for="topicId">Topic:</label>
                             <select class="topicId" name="TopicId" required>
                                 @if (Model != null) {
-                                    @foreach (var topic in Model.Topics)
+                                    @foreach (var topic in Model)
                                     {
                                         <option value="@topic.Id">@topic.Name</option>
                                     }
@@ -77,27 +80,70 @@
     <div class="menu" id="menu">
         <div class="menu-content menu-items dragscroll">
             @if (Model != null) {
-                @foreach (var topic in Model.Topics)
+                @foreach (var topic in Model)
                 {
-                    <a class="menu-item" href="#">@topic.Name</a>
+                    <a class="menu-item" id="topic-@topic.Id" href="javascript:void(0);" onclick="setActiveTopic(@topic.Id)">@topic.Name</a>
                 }
             }
-        </div>
+        </div>  
     </div>
 
-    <div class="blog-list">
-        @if (Model != null) {
-            @foreach (var blog in Model.Blogs)
-            {
-                <a href="#">
-                    <div class="blog-item">
-                        <div class="content">
-                            <div class="title">@blog.Title</div>
-                        </div>
-                        <img class="blog-img" src="@blog.PictureUrl" alt="@blog.Title">
-                    </div>
-                </a>
-            }
-        }
+    <div class="blog-list" id="blog-list">
+        
     </div>
 </div>
+
+<script>
+    document.getElementById('searchForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const query = document.querySelector('input[name="query"]').value;
+
+        fetch('/Blog/SearchBlogByTopic?query=' + encodeURIComponent(query))
+            .then(response => response.json())
+            .then(data => {
+                const topics = data.topics;
+                const activeTopicId = data.activeTopicId;
+                
+                let menuContent = document.querySelector('.menu -content');
+                menuContent.innerHTML = '';
+                topics.forEach(topic => {
+                    let topicItem = document.createElement('a');
+                    topicItem.className = 'menu-item';
+                    topicItem.id = 'topic-' + topic.Id;
+                    topicItem.href = 'javascript:void(0);';
+                    topicItem.onclick = function() {
+                        setActiveTopic(topic.Id);
+                    };
+                    topicItem.textContent = topic.Name;
+                    menuContent.appendChild(topicItem);
+                });
+
+                setActiveTopic(activeTopicId);
+            });
+
+    function setActiveTopic(topicId) {
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.classList.remove('active');
+        });
+        document.getElementById('topic-' + topicId).classList.add('active');
+
+        fetch('/Blog/GetBlogsByTopic/' + topicId)
+            .then(response => response.json())
+            .then(blogs => {
+                let blogList = document.getElementById('blog-list');
+                blogList.innerHTML = '';
+                blogs.forEach(blog => {
+                    let blogItem = `
+                        <a href="#">
+                            <div class="blog-item">
+                                <div class="content">
+                                    <div class="title">${blog.title}</div>
+                                </div>
+                                <img class="blog-img" src="${blog.pictureUrl}" alt="${blog.title}">
+                            </div>
+                        </a>`;
+                    blogList.innerHTML += blogItem;
+                });
+            });
+    }
+</script>
