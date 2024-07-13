@@ -32,8 +32,8 @@ public class CreateHandler : IRequestHandler<CreateCommand>
         var blog = new Blog {
             Title = request.Title,
             Text = request.Text,
-            TopicId = request.TopicId,
-            UserId = request.UserId,
+            TopicId = request.TopicId.Value,
+            UserId = request.UserId.Value,
         };
 
         await repository.CreateAsync(blog);

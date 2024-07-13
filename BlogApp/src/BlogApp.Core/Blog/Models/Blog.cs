@@ -15,10 +15,10 @@ public class Blog
     [Required]
     public string? Text { get; set; }
     [ForeignKey("TopicId"), Required]
-    public int? TopicId { get; set; }
+    public int TopicId { get; set; }
     public Topic? Topic { get; set; }
     [ForeignKey("UserId"), Required]
-    public int? UserId { get; set; }
+    public int UserId { get; set; }
     public User? User { get; set; }
     public string? PictureUrl { get; set; } 
     [Required]
