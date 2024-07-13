@@ -33,6 +33,14 @@ using Microsoft.EntityFrameworkCore;
 using MyGames.Infrastructure.Data.DbContext;
 
 using BlogApp.Infrastructure.Topic.Repositories.Dapper;
+using BlogApp.Infrastructure.Blog.Repositories.Dapper;
+using BlogApp.Core.Blog.Models;
+using BlogApp.Infrastructure.UserTopic.Repositories.Dapper;
+
+var rep = new UserTopicDapperRepository("Server=blogpostgresqlserver.postgres.database.azure.com;Database=postgres;Port=5432;User Id=azureuser;Password=Password123!;Ssl Mode=Require;");
+await rep.GetAllTopicsByUserId(1);
+
+return;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();

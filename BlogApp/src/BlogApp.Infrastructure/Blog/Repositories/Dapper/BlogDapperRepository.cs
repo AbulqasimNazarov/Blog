@@ -17,8 +17,8 @@ public class BlogDapperRepository : IBlogRepository
     public async Task CreateAsync(Blog blog)
     {
         using var connection = new NpgsqlConnection(connectionString);
-        await connection.ExecuteAsync(@"insert into Blogs
-                                    (Title, Text, TopicId, UserId, PictureUrl) 
+        await connection.ExecuteAsync(@"insert into ""Blogs""
+                                    (""Title"", ""Text"", ""TopicId"", ""UserId"", ""PictureUrl"") 
                                     values (@Title, @Text, @TopicId, @UserId, @PictureUrl)",
                                     blog);
     }
@@ -32,8 +32,8 @@ public class BlogDapperRepository : IBlogRepository
         var nameDapper = "%" + encodeForILike(name) + "%";
 
         var blogs = await connection.QueryAsync<Blog>(
-            @"SELECT * FROM Blogs
-            WHERE Title ILIKE @name;", new {
+            @"SELECT * FROM ""Blogs""
+            WHERE ""Title"" ILIKE @name;", new {
             name = nameDapper,
         });
 
@@ -43,7 +43,7 @@ public class BlogDapperRepository : IBlogRepository
     public async Task<IEnumerable<Blog?>> GetAllByTopicId(int topicId) 
     {
         using var connection = new NpgsqlConnection(connectionString);
-        var blogs = await connection.QueryAsync<Blog>(@"select * from Blogs where TopicId = @TopicId", new {
+        var blogs = await connection.QueryAsync<Blog>(@"select * from ""Blogs"" where ""TopicId"" = @TopicId", new {
             TopicId = topicId,
         });
 
