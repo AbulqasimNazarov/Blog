@@ -7,14 +7,14 @@ using System.Threading;
 using BlogApp.Core.Blog.Repositories.Base;
 using BlogApp.Core.Blog.Models;
 
-public class CreateHandler : IRequestHandler<CreateBlogCommand>
+public class CreateHandler : IRequestHandler<CreateCommand>
 {
     private readonly IBlogRepository repository;
     public CreateHandler(IBlogRepository repository)
     {
         this.repository = repository;
     }
-    public async Task Handle(CreateBlogCommand request, CancellationToken cancellationToken)
+    public async Task Handle(CreateCommand request, CancellationToken cancellationToken)
     {
         if(string.IsNullOrEmpty(request.Title) || string.IsNullOrWhiteSpace(request.Title)) {
             throw new ArgumentException("title is empty");
