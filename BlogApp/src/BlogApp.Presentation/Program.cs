@@ -1,59 +1,74 @@
 using BlogApp.Core.Blog.Repositories.Base;
-using BlogApp.Core.Blog.Services.Base;
-using BlogApp.Core.Role.Repositories.Base;
-using BlogApp.Core.Role.Services.Base;
-using BlogApp.Core.Topic.Repositories.Base;
-using BlogApp.Core.Topic.Services.Base;
-using BlogApp.Core.User.Repositories.Base;
-using BlogApp.Core.User.Services.Base;
-using BlogApp.Core.UserRole.Repositories.Base;
-using BlogApp.Core.UserRole.Services.Base;
-using BlogApp.Infrastructure.Blog.Repositories.Dapper;
-using BlogApp.Infrastructure.Blog.Services;
-using BlogApp.Infrastructure.Role.Repositories.Dapper;
-using BlogApp.Infrastructure.Role.Services;
-using BlogApp.Infrastructure.Topic.Repositories.Dapper;
-using BlogApp.Infrastructure.Topic.Services;
-using BlogApp.Infrastructure.User.Repositories.Dapper;
-using BlogApp.Infrastructure.User.Services;
-using BlogApp.Infrastructure.UserRole.Repositories.Dapper;
-using BlogApp.Infrastructure.UserRole.Services;
+using BlogApp.Core.Role.Models;
+using BlogApp.Core.User.Models;
+
+
+
+
 using BlogApp.Presentation.Validators;
 using BlogApp.Presentation.Verification.Base;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
+using BlogApp.Infrastructure.Data.DbContext;
+
+using BlogApp.Infrastructure.Topic.Repositories.Dapper;
+using BlogApp.Infrastructure.Blog.Repositories.Dapper;
+using BlogApp.Core.Blog.Models;
+using BlogApp.Infrastructure.UserTopic.Repositories.Dapper;
+using Microsoft.AspNetCore.Identity;
+using System.Reflection;
+using BlogApp.Infrastructure.Topic.Queries;
+using MediatR;
+using BlogApp.Core.Topic.Models;
+using BlogApp.Infrastructure.Topic.Handlers;
+using BlogApp.Core.Topic.Repositories.Base;
+using BlogApp.Infrastructure.Topic.Repositories.Ef_Core;
+using BlogApp.Infrastructure.Blog.Queries;
+using BlogApp.Infrastructure.Blog.Handlers;
+using BlogApp.Infrastructure.Blog.Repositories.Ef_Core;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
-// builder.Services.AddSwaggerGen();
 
-// Add services to the container.
+builder.Services.AddDbContext<BlogDbContext>(dbContextOptionsBuilder => {
+    var connectionString = builder.Configuration.GetConnectionString("PostgreSqlDev");
+    dbContextOptionsBuilder.UseNpgsql(connectionString: connectionString);
+});
+
+builder.Services.AddIdentity<User, Role>(options =>
+{
+    options.User.RequireUniqueEmail = true;
+})
+.AddEntityFrameworkStores<BlogDbContext>()
+.AddDefaultTokenProviders();
+
 builder.Services.AddControllersWithViews();
 
-var connectionString = builder.Configuration.GetConnectionString("MsSqlServer");
+builder.Services.AddMediatR(configuration => {
+    configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+});
 
-builder.Services.AddSingleton(connectionString);
-
-builder.Services.AddScoped<IRoleRepository, RoleDapperRepository>(provider =>
-    new RoleDapperRepository(connectionString));
+builder.Services.AddTransient<IRequestHandler<GetAllQuery, IEnumerable<Topic>>, GetAllHandler>();
+builder.Services.AddTransient<IRequestHandler<GetAllByTopicIdQuery, IEnumerable<Blog>>, GetAllByTopicIdHandler>();
 
 builder.Services.AddValidatorsFromAssemblyContaining<UserRegistrationValidator>();
 
 builder.Services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Program>());
 
-builder.Services.AddScoped<IRoleService, RoleService>();
-builder.Services.AddScoped<IUserRoleService, UserRoleService>();
-builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
-builder.Services.AddScoped<ITopicService, TopicService>();
-builder.Services.AddScoped<IBlogService, BlogService>();
+// builder.Services.AddScoped<ITopicService, TopicService>();
+// builder.Services.AddScoped<IBlogService, BlogService>();
+// builder.Services.AddScoped<IConfiguration>(provider => builder.Configuration);
 
-builder.Services.AddScoped<IRoleRepository, RoleDapperRepository>();
-builder.Services.AddScoped<IUserRoleRepository, UserRoleDapperRepository>();
-builder.Services.AddScoped<IUserRepository, UserDapperRepository>();
-builder.Services.AddScoped<ITopicRepository, TopicDapperRepository>();
-builder.Services.AddScoped<IBlogRepository, BlogDapperRepository>();
+// builder.Services.AddScoped<IRoleRepository, RoleDapperRepository>();
+// builder.Services.AddScoped<IUserRoleRepository, UserRoleDapperRepository>();
+// builder.Services.AddScoped<IUserRepository, UserDapperRepository>();
+builder.Services.AddScoped<ITopicRepository, TopicEfCoreRepository>();
+builder.Services.AddScoped<IBlogRepository, BlogEfCoreRepository>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
@@ -62,7 +77,15 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.AccessDeniedPath = "/Identity/AccessDenied";
     });
 
+
+
+
+
+
+
 var app = builder.Build();
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

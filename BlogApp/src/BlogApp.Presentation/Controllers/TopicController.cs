@@ -1,26 +1,28 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using BlogApp.Presentation.Models;
-using BlogApp.Core.Topic.Services.Base;
+using MediatR;
+using BlogApp.Infrastructure.Topic.Queries;
+// using BlogApp.Core.Topic.Services.Base;
 
 
 namespace BlogApp.Presentation.Controllers;
 
 public class TopicController : Controller
 {
-    private readonly ITopicService topicService;
+    private readonly ISender sender;
 
-    public TopicController(ITopicService topicService)
+    public TopicController(ISender sender)
     {
-        this.topicService = topicService;
+        this.sender = sender;
     }
 
     [HttpGet]
-    
-    public async Task<IActionResult> ChooseTags()
+    public async Task<IActionResult> ChooseTags(GetAllQuery getAllQuery)
     {
-        var topics = await topicService.GetAllTopicsAsync();
-        return View(topics);
+        var getTopics = await sender.Send(getAllQuery);
+        
+        return View(getTopics);
     }
 
     

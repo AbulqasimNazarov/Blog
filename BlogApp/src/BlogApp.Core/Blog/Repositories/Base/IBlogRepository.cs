@@ -6,7 +6,7 @@ using BlogApp.Core.Base.Methods;
 public interface IBlogRepository: ICreateAsync<Blog>, IGetByIdAsync<Blog?>
 {   
     public Task<IEnumerable<Blog?>> GetAllByUserId(int userId);
-    public Task<IEnumerable<Blog?>> GetAllByTopicId(List<int> topicId);
+    public Task<IEnumerable<Blog?>> GetAllByTopicId(int topicId);
     public Task<IEnumerable<Blog?>> GetAllByName(string name);
     
 }
