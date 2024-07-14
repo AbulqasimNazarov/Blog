@@ -6,7 +6,6 @@ namespace BlogApp.Infrastructure.UserTopic.Repositories.Dapper;
 using BlogApp.Core.UserTopic.Repositories.Base;
 using BlogApp.Core.UserTopic.Models;
 using BlogApp.Core.Topic.Models;
-using Microsoft.AspNetCore.Http;
 
 public class UserTopicDapperRepository : IUserTopicRepository
 {
@@ -16,24 +15,24 @@ public class UserTopicDapperRepository : IUserTopicRepository
         this.connectionString = connectionString;
     }
 
-    public async Task CreateAsync(UserTopic userTopic, IFormFile image)
+    public async Task CreateAsync(UserTopic userTopic)
     {
-        var connection = new NpgsqlConnection(connectionString);
-        await connection.ExecuteAsync(@"insert into UserTopics
-                                    (UserId, TopicId) values (@UserId, @TopicId)", userTopic);
+        using var connection = new NpgsqlConnection(connectionString);
+        await connection.ExecuteAsync(@"insert into ""UserTopics""
+                                    (""UserId"", ""TopicId"") values (@UserId, @TopicId)", userTopic);
     }
 
     public async Task DeleteAsync(UserTopic userTopic)
     {
-        var connection = new NpgsqlConnection(connectionString);
-        await connection.ExecuteAsync(@"delete from UserTopics
-                                    where UserId = @UserId, TopicId = @TopicId)", userTopic);
+        using var connection = new NpgsqlConnection(connectionString);
+        await connection.ExecuteAsync(@"delete from ""UserTopics""
+                                    where ""UserId"" = @UserId, ""TopicId"" = @TopicId)", userTopic);
     }
 
     public async Task<IEnumerable<Topic?>> GetAllTopicsByUserId(int userId)
     {
-        var connection = new NpgsqlConnection(connectionString);
-        var topics = await connection.QueryAsync<Topic>(@"select T.Id, T.Name from Topics T join UserTopics U on U.TopicId = T.Id where UserId = @UserId", new {
+        using var connection = new NpgsqlConnection(connectionString);
+        var topics = await connection.QueryAsync<Topic>(@"select T.""Id"", T.""Name"" from ""Topics"" T join ""UserTopics"" U on U.""TopicId"" = T.""Id"" where ""UserId"" = @UserId", new {
             UserId = userId,
         });
 

@@ -1,12 +1,15 @@
 using BlogApp.Core.Dtos;
 using BlogApp.Core.Dtos.Models;
-using BlogApp.Core.User.Services.Base;
+using BlogApp.Core.User.Models;
+
+// using BlogApp.Core.User.Services.Base;
 using BlogApp.Presentation.Verification.Base;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using System.Text.Encodings.Web;
@@ -15,14 +18,16 @@ namespace BlogApp.Presentation.Controllers
 {
     public class IdentityController : Controller
     {
-        public IUserService userService;
+        private readonly SignInManager<User> signInManager;
+        private readonly UserManager<User> userManager;
         private readonly IDataProtector dataProtector;
         private readonly IValidator<RegistrationDto> userValidator;
         private readonly IEmailService emailService;
 
-        public IdentityController(IValidator<RegistrationDto> userValidator, IUserService userService, IDataProtectionProvider dataProtectionProvider, IEmailService emailService)
+        public IdentityController(SignInManager<User> signInManager, UserManager<User> userManager, IValidator<RegistrationDto> userValidator, IDataProtectionProvider dataProtectionProvider, IEmailService emailService)
         {
-            this.userService = userService;
+            this.signInManager = signInManager;
+            this.userManager = userManager;
             this.dataProtector = dataProtectionProvider.CreateProtector("identity");
             this.userValidator = userValidator;
             this.emailService = emailService;
@@ -40,31 +45,6 @@ namespace BlogApp.Presentation.Controllers
             }
 
             return base.View();
-        }
-
-        [Route("api/[controller]/[action]", Name = "LoginEndPoint")]
-        [HttpPost]
-        public async Task<IActionResult> Login([FromForm] LoginDto loginDto)
-        {
-            var foundUser = await userService.GetSignedUpUser(loginDto);
-            if (foundUser == null || foundUser.Email != loginDto.Email)
-            {
-                base.TempData["error"] = "Incorrect login or password!";
-                return base.RedirectToRoute("LoginView");
-            }
-
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, foundUser.Email),
-                new Claim("FullName", foundUser.Name),
-                new Claim(ClaimTypes.Role, "User")
-            };
-
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
-
-            return base.RedirectToAction(controllerName: "Home", actionName: "Index");
         }
 
         [Route("/[controller]/[action]", Name = "RegistrationView")]
@@ -94,10 +74,8 @@ namespace BlogApp.Presentation.Controllers
                     return View();
                 }
 
-                await this.userService.CreateAsync(registrationDto);
-
-                
-                var token = dataProtector.Protect(registrationDto.Email);
+                var tokenData = $"{registrationDto.Email}:{registrationDto.Name}";
+                var token = dataProtector.Protect(tokenData);
                 var confirmationLink = Url.Action("ConfirmEmail", "Identity", new { token }, Request.Scheme);
                 var message = $"Please confirm your registration by clicking on the link: {HtmlEncoder.Default.Encode(confirmationLink)}";
 
@@ -106,53 +84,64 @@ namespace BlogApp.Presentation.Controllers
             catch (Exception ex)
             {
                 TempData["error"] = ex.Message;
-                return base.RedirectToRoute("RegistrationView");
+                return RedirectToRoute("RegistrationView");
             }
 
-            return base.RedirectToRoute("ConfirmationView");
+            return RedirectToRoute("ConfirmationView");
         }
 
         [HttpGet]
         [Route("/[controller]/[action]", Name = "ConfirmEmail")]
         public async Task<IActionResult> ConfirmEmail(string token)
         {
-            var email = dataProtector.Unprotect(token);
-            var user = await userService.GetUserByEmailAsync(email);
-
-            if (user == null)
+            if (string.IsNullOrEmpty(token))
             {
                 return BadRequest("Invalid token");
             }
 
-            var claims = new List<Claim>
+            var tokenData = dataProtector.Unprotect(token);
+            var dataParts = tokenData.Split(':');
+            if (dataParts.Length != 2)
             {
-                new Claim(ClaimTypes.Name, user.Email),
-                new Claim("FullName", user.Name),
-                new Claim(ClaimTypes.Role, "User")
+                return BadRequest("Invalid token data");
+            }
+
+            var email = dataParts[0];
+            var name = dataParts[1];
+
+            var user = new User
+            {
+                Email = email,
+                Name = name,
+                UserName = name
             };
+
+            var result = await userManager.CreateAsync(user);
+            if (!result.Succeeded)
+            {
+                return BadRequest(string.Join("\n", result.Errors.Select(error => error.Description)));
+            }
+
+            var claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, user.Email),
+            new Claim("FullName", user.Name),
+            new Claim(ClaimTypes.Role, "User")
+        };
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
 
-            return base.RedirectToAction(controllerName: "Topic", actionName: "ChooseTags");
+            return RedirectToAction("ChooseTags", "Topic");
         }
-
-        [HttpGet]
-        [Route("/api/[controller]/[action]", Name = "LogOut")]
-        public async Task<IActionResult> Logout(string? ReturnUrl)
-        {
-            await base.HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return base.RedirectToRoute("LoginView", new { ReturnUrl });
-        }
-
 
         [HttpGet]
         [Route("[controller]/[action]", Name = "ConfirmationView")]
-        public async Task<IActionResult> Confirmation(){
-            return base.View();
+        public IActionResult Confirmation()
+        {
+            return View();
         }
-
-        
     }
+
 }

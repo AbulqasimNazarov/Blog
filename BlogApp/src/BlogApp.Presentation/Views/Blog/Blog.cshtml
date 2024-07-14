@@ -1,4 +1,7 @@
+
 @model IEnumerable<BlogApp.Core.Topic.Models.Topic>
+
+
 
 @{
     ViewData["Title"] = "Blog";
@@ -46,12 +49,15 @@
                         <div class="blog-topic">
                             <label for="topicId">Topic:</label>
                             <select class="topicId" name="TopicId" required>
+
                                 @if (Model != null) {
                                     @foreach (var topic in Model)
                                     {
                                         <option value="@topic.Id">@topic.Name</option>
                                     }
                                 }
+
+                                
                             </select>
                         </div>
                         <div class="blog-text">

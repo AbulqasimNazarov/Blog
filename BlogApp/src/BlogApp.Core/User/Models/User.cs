@@ -1,14 +1,14 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace BlogApp.Core.User.Models;
 
-public class User
+using BlogApp.Core.UserTopic.Models;
+
+public class User : IdentityUser<int>
 {
-    [Key]
-    public int Id { get; set; }
     [Required]
     public string? Name { get; set; }
     public string? AvatarUrl { get; set; }
-    [Required]
-    public string? Email { get; set; }
+    public IEnumerable<UserTopic>? Topics {set; get;}
 }
