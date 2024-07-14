@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using BlogApp.Core.Topic.Models;
 using BlogApp.Core.Topic.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
-using MyGames.Infrastructure.Data.DbContext;
+using BlogApp.Infrastructure.Data.DbContext;
 
 public class TopicEfCoreRepository : ITopicRepository
 {

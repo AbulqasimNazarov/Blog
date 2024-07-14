@@ -8,7 +8,7 @@ using BlogApp.Core.Topic.Models;
 using BlogApp.Core.UserTopic.Models;
 using BlogApp.Core.UserTopic.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
-using MyGames.Infrastructure.Data.DbContext;
+using BlogApp.Infrastructure.Data.DbContext;
 
 public class UserTopicEfCoreRepository : IUserTopicRepository
 {

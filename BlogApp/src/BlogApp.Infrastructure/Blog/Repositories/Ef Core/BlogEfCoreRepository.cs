@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using BlogApp.Core.Blog.Models;
 using BlogApp.Core.Blog.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
-using MyGames.Infrastructure.Data.DbContext;
+using BlogApp.Infrastructure.Data.DbContext;
 
 public class BlogEfCoreRepository : IBlogRepository
 {

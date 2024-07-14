@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
-namespace MyGames.Infrastructure.Data.DbContext;
+namespace BlogApp.Infrastructure.Data.DbContext;
 
 using BlogApp.Core.Role.Models;
 using BlogApp.Core.User.Models;
