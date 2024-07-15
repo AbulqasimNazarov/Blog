@@ -1,10 +1,7 @@
-
-@model IEnumerable<BlogApp.Core.Topic.Models.Topic>
-
-
+@model IEnumerable<BlogApp.Core.Blog.Models.Blog>
 
 @{
-    ViewData["Title"] = "Blog";
+    ViewData["Title"] = "Blogs";
 }
 
 <div class="blog-page">
@@ -20,7 +17,6 @@
                         <img src="~/Assets/IMG/search-icon.png" alt="Search">
                     </button>
                 </form>
-
             </div>
         </div>
         <div class="header-block right-side">
@@ -49,15 +45,13 @@
                         <div class="blog-topic">
                             <label for="topicId">Topic:</label>
                             <select class="topicId" name="TopicId" required>
-
-                                @if (Model != null) {
-                                    @foreach (var topic in Model)
+                                @if (Model != null)
+                                {
+                                    @foreach (var blog in Model)
                                     {
-                                        <option value="@topic.Id">@topic.Name</option>
+                                        <option value="@blog.TopicId">@blog.Topic.Name</option>
                                     }
                                 }
-
-                                
                             </select>
                         </div>
                         <div class="blog-text">
@@ -85,17 +79,31 @@
     </div>
     <div class="menu" id="menu">
         <div class="menu-content menu-items dragscroll">
-            @if (Model != null) {
-                @foreach (var topic in Model)
+            @if (Model != null)
+            {
+                @foreach (var blog in Model)
                 {
-                    <a class="menu-item" id="topic-@topic.Id" href="javascript:void(0);" onclick="setActiveTopic(@topic.Id)">@topic.Name</a>
+                    <a class="menu-item" id="topic-@blog.TopicId" href="javascript:void(0);" onclick="setActiveTopic(@blog.TopicId)">@blog.Topic.Name</a>
                 }
             }
         </div>  
     </div>
 
     <div class="blog-list" id="blog-list">
-        
+        @if (Model != null)
+        {
+            foreach (var blog in Model)
+            {
+                <div class="blog-item">
+                    <a href="#">
+                        <div class="content">
+                            <div class="title">@blog.Title</div>
+                        </div>
+                        <img class="blog-img" src="@blog.PictureUrl" alt="@blog.Title">
+                    </a>
+                </div>
+            }
+        }
     </div>
 </div>
 
@@ -110,7 +118,7 @@
                 const topics = data.topics;
                 const activeTopicId = data.activeTopicId;
                 
-                let menuContent = document.querySelector('.menu -content');
+                let menuContent = document.querySelector('.menu-content');
                 menuContent.innerHTML = '';
                 topics.forEach(topic => {
                     let topicItem = document.createElement('a');
@@ -126,6 +134,7 @@
 
                 setActiveTopic(activeTopicId);
             });
+    });
 
     function setActiveTopic(topicId) {
         document.querySelectorAll('.menu-item').forEach(item => {
@@ -143,9 +152,9 @@
                         <a href="#">
                             <div class="blog-item">
                                 <div class="content">
-                                    <div class="title">${blog.title}</div>
+                                    <div class="title">${blog.Title}</div>
                                 </div>
-                                <img class="blog-img" src="${blog.pictureUrl}" alt="${blog.title}">
+                                <img class="blog-img" src="${blog.PictureUrl}" alt="${blog.Title}">
                             </div>
                         </a>`;
                     blogList.innerHTML += blogItem;

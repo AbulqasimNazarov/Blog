@@ -33,13 +33,43 @@ namespace BlogApp.Presentation.Controllers
         //     return View();
         // }
 
-        [HttpPost]
-        [Route("/Blog/GetBlogsByTopic")]
-        public async Task<IActionResult> GetBlogsByTopic(GetAllByTopicIdQuery getAllByTopicIdQuery, int id)
+        [HttpGet]
+        [Route("[controller]/[action]/{id}")]
+        public async Task<IActionResult> GetBlogsByTopic(int id)
         {
-            var blogs = await this.sender.Send(getAllByTopicIdQuery);
-            
-            return View("Blog", blogs);
+            try
+            {
+                var query = new GetAllByTopicIdQuery { TopicId = id };
+                var blogs = await sender.Send(query);
+
+                return Json(blogs);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("[controller]/[action]")]
+        public async Task<IActionResult> GetBlogsByTopic(List<int> selectedTopicIds)
+        {
+            if (selectedTopicIds == null || selectedTopicIds.Count < 3)
+            {
+                ModelState.AddModelError("", "Please choose at least three topics.");
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                //var filteredBlogs = await sender.Send(new GetBlogsByTopicIdsQuery { TopicIds = selectedTopicIds });
+
+                return View("Blog");
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
 
