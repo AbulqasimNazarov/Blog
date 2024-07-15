@@ -2,6 +2,7 @@ using BlogApp.Core.Blog.Models;
 using BlogApp.Infrastructure.Blog.Queries;
 using MediatR;
 
+
 // using BlogApp.Core.Blog.Services;
 // using BlogApp.Core.Blog.Services.Base;
 // using BlogApp.Core.Topic.Services.Base;
@@ -19,13 +20,7 @@ namespace BlogApp.Presentation.Controllers
             this.sender = sender;
         }
 
-        // [HttpGet]
-        // [Route("[controller]/[action]/{id}")]
-        // public async Task<IActionResult> GetBlogsByTopic(int id)
-        // {
-        //     var blogs = await blogService.GetAllBlogsByTopicId(new List<int> { id });
-        //     return View(blogs);
-        // }
+
 
         // [HttpGet]
         // public IActionResult SearchBlogByTopic()
@@ -42,7 +37,10 @@ namespace BlogApp.Presentation.Controllers
                 if (selectedTopicIds == null || selectedTopicIds.Length == 0)
                 {
                     return BadRequest("No topics selected");
+                    
                 }
+
+                Console.WriteLine($"Selected Topic IDs: {string.Join(", ", selectedTopicIds)}");
 
                 var getAllByTopicIdQuery = new GetAllByTopicIdQuery
                 {
@@ -56,8 +54,16 @@ namespace BlogApp.Presentation.Controllers
             {
                 return BadRequest(ex.Message);
             }
-
         }
+
+
+        // [HttpGet]
+        // [Route("/Blog/GetBlogsByTopicLoginned")]
+        // public async Task<IActionResult> GetBlogsByTopicLoginned(){
+
+        //     return View();
+        // }
+
 
 
 

@@ -28,6 +28,11 @@ using BlogApp.Infrastructure.Topic.Repositories.Ef_Core;
 using BlogApp.Infrastructure.Blog.Queries;
 using BlogApp.Infrastructure.Blog.Handlers;
 using BlogApp.Infrastructure.Blog.Repositories.Ef_Core;
+using BlogApp.Core.UserTopic.Repositories.Base;
+using BlogApp.Infrastructure.UserTopic.Repositories.Ef_Core;
+using BlogApp.Infrastructure.UserTopic.Queries;
+using BlogApp.Core.UserTopic.Models;
+using BlogApp.Infrastructure.UserTopic.Handlers;
 
 
 
@@ -52,10 +57,13 @@ builder.Services.AddMediatR(configuration => {
     configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
 });
 
+builder.Services.AddTransient<IRequestHandler<GetAllTopicsByUserIdQuery, IEnumerable<Topic>>, GetAllTopicsByUserIdHandler>();
 builder.Services.AddTransient<IRequestHandler<GetAllQuery, IEnumerable<Topic>>, GetAllHandler>();
 builder.Services.AddTransient<IRequestHandler<GetAllByTopicIdQuery, IEnumerable<Blog>>, GetAllByTopicIdHandler>();
+//builder.Services.AddTransient<IRequestHandler<GetAllTopicsByUserIdQuery, IEnumerable<UserTopic>>, GetAllTopicsByUserIdHandler>();
 
 builder.Services.AddValidatorsFromAssemblyContaining<UserRegistrationValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<UserLoginValidator>();
 
 builder.Services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Program>());
 
@@ -66,7 +74,7 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 
 // builder.Services.AddScoped<IRoleRepository, RoleDapperRepository>();
 // builder.Services.AddScoped<IUserRoleRepository, UserRoleDapperRepository>();
-// builder.Services.AddScoped<IUserRepository, UserDapperRepository>();
+builder.Services.AddScoped<IUserTopicRepository, UserTopicEfCoreRepository>();
 builder.Services.AddScoped<ITopicRepository, TopicEfCoreRepository>();
 builder.Services.AddScoped<IBlogRepository, BlogEfCoreRepository>();
 
