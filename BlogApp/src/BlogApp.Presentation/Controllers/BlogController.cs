@@ -33,20 +33,42 @@ namespace BlogApp.Presentation.Controllers
         //     return View();
         // }
 
-        [HttpPost]
+        [HttpGet]
         [Route("/Blog/GetBlogsByTopic")]
-        public async Task<IActionResult> GetBlogsByTopic(GetAllByTopicIdQuery getAllByTopicIdQuery, int id)
+        public async Task<IActionResult> GetBlogsByTopic([FromQuery] int[] selectedTopicIds)
         {
-            var blogs = await this.sender.Send(getAllByTopicIdQuery);
-            
-            return View("Blog", blogs);
+            try
+            {
+                if (selectedTopicIds == null || selectedTopicIds.Length == 0)
+                {
+                    return BadRequest("No topics selected");
+                }
+
+                var getAllByTopicIdQuery = new GetAllByTopicIdQuery
+                {
+                    TopicId = selectedTopicIds.First()
+                };
+
+                var blogs = await this.sender.Send(getAllByTopicIdQuery);
+                return View("Blog", blogs);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
 
+
         [HttpGet("[controller]/[action]/{id}")]
-        public async Task<IActionResult> Image(GetByIdQuery getByIdQuery)
+        public async Task<IActionResult> Image(int id)
         {
-            var blog = await this.sender.Send(getByIdQuery);
+            var blogQuery = new GetByIdQuery
+            {
+                Id = id,
+            };
+            var blog = await this.sender.Send(blogQuery);
             if (blog == null || string.IsNullOrEmpty(blog.PictureUrl))
             {
                 return NotFound("Film or image not found.");

@@ -13,7 +13,7 @@
         padding: 10px;
         cursor: pointer;
     }
-    
+
     .topic-button.selected {
         background-color: #9BD21C;
         color: white;
@@ -68,20 +68,9 @@
 
     function submitSelectedTopics() {
         if (selectedTopics.length >= 3) {
-            const form = document.createElement('form');
-            form.method = 'post';
-            form.action = '/Blog/GetBlogsByTopic';
-
-            selectedTopics.forEach(id => {
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = 'selectedTopicIds';
-                input.value = id;
-                form.appendChild(input);
-            });
-
-            document.body.appendChild(form);
-            form.submit();
+            const queryString = selectedTopics.map(id => `selectedTopicIds=${id}`).join('&');
+            const url = `/Blog/GetBlogsByTopic?${queryString}`;
+            window.location.href = url;
         } else {
             alert('Please choose at least three topics.');
         }
