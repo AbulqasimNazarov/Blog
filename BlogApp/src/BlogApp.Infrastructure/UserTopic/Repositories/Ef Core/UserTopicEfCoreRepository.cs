@@ -24,12 +24,17 @@ public class UserTopicEfCoreRepository : IUserTopicRepository
         await dbContext.UserTopics.AddAsync(userTopic);
     }
 
+    public async Task CreateListAsync(IEnumerable<UserTopic> userTopics)
+    {
+        await dbContext.UserTopics.AddRangeAsync(userTopics);
+    }
+
     public async Task DeleteAsync(UserTopic userTopic)
     {
         dbContext.UserTopics.Remove(userTopic);
     }
 
-    public async Task<IEnumerable<Topic?>> GetAllTopicsByUserId(int userId)
+    public async Task<IEnumerable<Topic?>> GetAllTopicsByUserIdAsync(int userId)
     {
         return dbContext.UserTopics
             .Where(ut => ut.UserId == userId)
