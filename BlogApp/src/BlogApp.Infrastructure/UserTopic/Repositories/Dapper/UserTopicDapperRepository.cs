@@ -22,6 +22,11 @@ public class UserTopicDapperRepository : IUserTopicRepository
                                     (""UserId"", ""TopicId"") values (@UserId, @TopicId)", userTopic);
     }
 
+    public Task CreateListAsync(IEnumerable<UserTopic> userTopics)
+    {
+        throw new NotImplementedException();
+    }
+
     public async Task DeleteAsync(UserTopic userTopic)
     {
         using var connection = new NpgsqlConnection(connectionString);
@@ -29,7 +34,7 @@ public class UserTopicDapperRepository : IUserTopicRepository
                                     where ""UserId"" = @UserId, ""TopicId"" = @TopicId)", userTopic);
     }
 
-    public async Task<IEnumerable<Topic?>> GetAllTopicsByUserId(int userId)
+    public async Task<IEnumerable<Topic?>> GetAllTopicsByUserIdAsync(int userId)
     {
         using var connection = new NpgsqlConnection(connectionString);
         var topics = await connection.QueryAsync<Topic>(@"select T.""Id"", T.""Name"" from ""Topics"" T join ""UserTopics"" U on U.""TopicId"" = T.""Id"" where ""UserId"" = @UserId", new {

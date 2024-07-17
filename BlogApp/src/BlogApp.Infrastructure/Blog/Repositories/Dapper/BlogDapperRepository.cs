@@ -23,7 +23,7 @@ public class BlogDapperRepository : IBlogRepository
                                     blog);
     }
 
-    public async Task<IEnumerable<Blog?>> GetAllByName(string name) // this methods finds various blogs those contain 'name' in the title  
+    public async Task<IEnumerable<Blog?>> GetAllByNameAsync(string name) // this methods finds various blogs those contain 'name' in the title  
     {
         using var connection = new NpgsqlConnection(connectionString);
 
@@ -40,7 +40,7 @@ public class BlogDapperRepository : IBlogRepository
         return blogs;
     }
 
-    public async Task<IEnumerable<Blog?>> GetAllByTopicId(int topicId) 
+    public async Task<IEnumerable<Blog?>> GetAllByTopicIdAsync(int topicId) 
     {
         using var connection = new NpgsqlConnection(connectionString);
         var blogs = await connection.QueryAsync<Blog>(@"select * from ""Blogs"" where ""TopicId"" = @TopicId", new {
@@ -50,7 +50,7 @@ public class BlogDapperRepository : IBlogRepository
         return blogs;
     }
 
-    public async Task<IEnumerable<Blog?>> GetAllByUserId(int userId)
+    public async Task<IEnumerable<Blog?>> GetAllByUserIdAsync(int userId)
     {
         var connection = new NpgsqlConnection(connectionString);
         var blogs = await connection.QueryAsync<Blog>(@"select * from Blogs where UserId = @UserId", new {

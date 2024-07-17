@@ -19,6 +19,6 @@ public class GetAllTopicsByUserIdHandler : IRequestHandler<GetAllTopicsByUserIdQ
             throw new ArgumentException("userId is incorrect");
         }
 
-        return await repository.GetAllTopicsByUserId(request.UserId.Value);
+        return await repository.GetAllTopicsByUserIdAsync(request.UserId.Value);
     }
 }

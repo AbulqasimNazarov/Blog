@@ -36,6 +36,6 @@ public class CreateListHandler : IRequestHandler<CreateListCommand>
             TopicId = topic.Id
         });
 
-        await repository.CreateListAsync(userTopics);
+        await repository.CreateListAsync(userTopics!);
     }
 }

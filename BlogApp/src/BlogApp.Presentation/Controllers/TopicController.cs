@@ -6,7 +6,7 @@ using BlogApp.Infrastructure.Topic.Queries;
 using BlogApp.Core.Topic.Models;
 using System.Text.Json;
 using BlogApp.Infrastructure.UserTopic.Commands;
-
+using BlogApp.Core.UserTopic.Models;
 
 public class TopicController : Controller
 {
@@ -33,20 +33,21 @@ public class TopicController : Controller
         }
     }
 
-    [HttpGet("[controller]/[actrion]")]
-    public async Task<IActionResult> CreatePreference()
+    [HttpGet("[controller]/[actrion]/{userId}")]
+    public async Task<IActionResult> CreatePreferences(int userId)
     {
         try
         {
             var topicsJson = this.HttpContext.Request.Headers["topics"];
             var topics = JsonSerializer.Deserialize<IEnumerable<Topic?>?>(topicsJson!);
             
-            var createCommand = new CreateCommand()
+            var createListCommand = new CreateListCommand()
             {
-
+                Topics = topics,
+                UserId = userId
             };
 
-            await sender.Send()
+            await sender.Send(createListCommand);
 
             return RedirectToAction(controllerName: "Blog", actionName: "Index");
         }

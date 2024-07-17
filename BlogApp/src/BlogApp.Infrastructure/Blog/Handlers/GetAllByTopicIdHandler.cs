@@ -19,6 +19,6 @@ public class GetAllByTopicIdHandler : IRequestHandler<GetAllByTopicIdQuery, IEnu
             throw new ArgumentException("topicId is incorrect");
         }
 
-        return await repository.GetAllByTopicId(request.TopicId.Value);
+        return await repository.GetAllByTopicIdAsync(request.TopicId.Value);
     }
 }
