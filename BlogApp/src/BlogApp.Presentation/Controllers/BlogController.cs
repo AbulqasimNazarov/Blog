@@ -5,7 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using BlogApp.Core.Blog.Models;
 using BlogApp.Infrastructure.Blog.Queries;
 using MediatR;
+using BlogApp.Infrastructure.Blog.Commands;
+using Microsoft.AspNetCore.Authorization;
+using BlogApp.Infrastructure.UserTopic.Queries;
 
+[Authorize] // say to guys!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 public class BlogController : Controller
 {
     private readonly ISender sender;
@@ -56,46 +60,72 @@ public class BlogController : Controller
         }
     }
 
-
-    // [HttpGet]
-    // [Route("/Blog/GetBlogsByTopicLoginned")]
-    // public async Task<IActionResult> GetBlogsByTopicLoginned(){
-
-    //     return View();
-    // }
-
-
-
-
-    [HttpGet("[controller]/[action]/{id}")]
-    public async Task<IActionResult> Image(int id)
+    [HttpGet("[controller]")]
+    public async Task<IActionResult> Index()
     {
-        var blogQuery = new GetByIdQuery
+        try
         {
-            Id = id,
-        };
-        var blog = await this.sender.Send(blogQuery);
-        if (blog == null || string.IsNullOrEmpty(blog.PictureUrl))
-        {
-            return NotFound("Film or image not found.");
+            int.TryParse(base.User.Claims.Where(c => c.Type == "id").FirstOrDefault()?.Value, out int currentUserId);
+            var getAllTopicsByUserIdQuery = new GetAllTopicsByUserIdQuery()
+            {
+                UserId = currentUserId,
+            };
+
+            var preferableTopics = await sender.Send(getAllTopicsByUserIdQuery);
+            return View(preferableTopics);
         }
-        var fileStream = System.IO.File.Open(blog.PictureUrl!, FileMode.Open);
-        return File(fileStream, "image/jpeg");
+        catch(Exception ex)
+        {
+            return StatusCode(500, ex.Message);
+        }
+
     }
 
 
-
-    // [HttpPost]
-    // [Route("[controller]/[action]")]
-    // public async Task<IActionResult> Add([FromForm] Blog newBlog, IFormFile image)
+    // [HttpGet("[controller]/[action]/{id}")]
+    // public async Task<IActionResult> Image(int id) //what does it do???
     // {
-    //     if (newBlog == null || image == null)
+    //     var blogQuery = new GetByIdQuery
     //     {
-    //         return BadRequest("Invalid blog data or image.");
+    //         Id = id,
+    //     };
+    //     var blog = await this.sender.Send(blogQuery);
+    //     if (blog == null || string.IsNullOrEmpty(blog.PictureUrl))
+    //     {
+    //         return NotFound("Film or image not found.");
     //     }
-
-    //     await blogService.CreateBlogAsync(newBlog, image);
-    //     return base.RedirectToAction(controllerName: "Blog", actionName: "FilterBlogsByTopics");
+    //     var fileStream = System.IO.File.Open(blog.PictureUrl!, FileMode.Open);
+    //     return File(fileStream, "image/jpeg");
     // }
+
+
+
+    [HttpPost("api/[controller]")]
+    public async Task<IActionResult> CreateBlog([FromForm] Blog newBlog, IFormFile image)
+    {
+        try
+        {
+            var createCommand = new CreateCommand()
+            {
+                Title = newBlog.Title,
+                Text = newBlog.Text,
+                UserId = newBlog.UserId,
+                TopicId = newBlog.TopicId,
+                CreationDate = DateTime.Now
+            };
+
+            await sender.Send(createCommand);
+
+            return Ok();
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.Message);
+        }
+    }
 }
 
