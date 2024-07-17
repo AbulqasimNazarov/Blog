@@ -9,7 +9,6 @@ using BlogApp.Infrastructure.Blog.Commands;
 using Microsoft.AspNetCore.Authorization;
 using BlogApp.Infrastructure.UserTopic.Queries;
 
-[Authorize] // say to guys!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 public class BlogController : Controller
 {
     private readonly ISender sender;

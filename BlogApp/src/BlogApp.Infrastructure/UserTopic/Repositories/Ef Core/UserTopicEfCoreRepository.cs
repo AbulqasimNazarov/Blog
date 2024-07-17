@@ -22,16 +22,19 @@ public class UserTopicEfCoreRepository : IUserTopicRepository
     public async Task CreateAsync(UserTopic userTopic)
     {
         await dbContext.UserTopics.AddAsync(userTopic);
+        await dbContext.SaveChangesAsync();
     }
 
     public async Task CreateListAsync(IEnumerable<UserTopic> userTopics)
     {
         await dbContext.UserTopics.AddRangeAsync(userTopics);
+        await dbContext.SaveChangesAsync();
     }
 
     public async Task DeleteAsync(UserTopic userTopic)
     {
         dbContext.UserTopics.Remove(userTopic);
+        await dbContext.SaveChangesAsync();
     }
 
     public async Task<IEnumerable<Topic?>> GetAllTopicsByUserIdAsync(int userId)

@@ -21,6 +21,7 @@ public class BlogEfCoreRepository : IBlogRepository
     public async Task CreateAsync(Blog blog)
     {
         await dbContext.Blogs.AddAsync(blog);
+        await dbContext.SaveChangesAsync();
     }
 
     public async Task<IEnumerable<Blog?>> GetAllByNameAsync(string name)

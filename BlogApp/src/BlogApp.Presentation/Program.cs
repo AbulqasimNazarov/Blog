@@ -12,27 +12,12 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using BlogApp.Infrastructure.Data.DbContext;
-
-using BlogApp.Infrastructure.Topic.Repositories.Dapper;
-using BlogApp.Infrastructure.Blog.Repositories.Dapper;
-using BlogApp.Core.Blog.Models;
-using BlogApp.Infrastructure.UserTopic.Repositories.Dapper;
 using Microsoft.AspNetCore.Identity;
-using System.Reflection;
-using BlogApp.Infrastructure.Topic.Queries;
-using MediatR;
-using BlogApp.Core.Topic.Models;
-using BlogApp.Infrastructure.Topic.Handlers;
 using BlogApp.Core.Topic.Repositories.Base;
 using BlogApp.Infrastructure.Topic.Repositories.Ef_Core;
-using BlogApp.Infrastructure.Blog.Queries;
-using BlogApp.Infrastructure.Blog.Handlers;
 using BlogApp.Infrastructure.Blog.Repositories.Ef_Core;
 using BlogApp.Core.UserTopic.Repositories.Base;
 using BlogApp.Infrastructure.UserTopic.Repositories.Ef_Core;
-using BlogApp.Infrastructure.UserTopic.Queries;
-using BlogApp.Core.UserTopic.Models;
-using BlogApp.Infrastructure.UserTopic.Handlers;
 
 
 
@@ -78,8 +63,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 
 
-
-
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -98,8 +82,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 
-// app.UseSwagger();
-// app.UseSwaggerUI();
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseAuthentication();
 app.UseAuthorization();

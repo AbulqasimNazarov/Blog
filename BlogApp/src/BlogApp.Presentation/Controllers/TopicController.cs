@@ -6,7 +6,7 @@ using BlogApp.Infrastructure.Topic.Queries;
 using BlogApp.Core.Topic.Models;
 using System.Text.Json;
 using BlogApp.Infrastructure.UserTopic.Commands;
-using BlogApp.Core.UserTopic.Models;
+
 
 public class TopicController : Controller
 {
