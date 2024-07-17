@@ -20,10 +20,18 @@ public class TopicController : Controller
     [HttpGet]
     public async Task<IActionResult> ChooseTags(GetAllQuery getAllQuery)
     {
-        var getTopics = await sender.Send(getAllQuery);
-        
-        return View(getTopics);
+        try
+        {
+            var getTopics = await sender.Send(getAllQuery);
+
+            return View(getTopics);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+
     }
 
-    
+
 }

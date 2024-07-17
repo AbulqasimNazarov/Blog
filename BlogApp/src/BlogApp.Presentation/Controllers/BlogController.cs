@@ -2,6 +2,7 @@ using BlogApp.Core.Blog.Models;
 using BlogApp.Infrastructure.Blog.Queries;
 using MediatR;
 
+
 // using BlogApp.Core.Blog.Services;
 // using BlogApp.Core.Blog.Services.Base;
 // using BlogApp.Core.Topic.Services.Base;
@@ -19,13 +20,7 @@ namespace BlogApp.Presentation.Controllers
             this.sender = sender;
         }
 
-        // [HttpGet]
-        // [Route("[controller]/[action]/{id}")]
-        // public async Task<IActionResult> GetBlogsByTopic(int id)
-        // {
-        //     var blogs = await blogService.GetAllBlogsByTopicId(new List<int> { id });
-        //     return View(blogs);
-        // }
+
 
         // [HttpGet]
         // public IActionResult SearchBlogByTopic()
@@ -34,49 +29,52 @@ namespace BlogApp.Presentation.Controllers
         // }
 
         [HttpGet]
-        [Route("[controller]/[action]/{id}")]
-        public async Task<IActionResult> GetBlogsByTopic(int id)
+        [Route("/Blog/GetBlogsByTopic")]
+        public async Task<IActionResult> GetBlogsByTopic([FromQuery] int[] selectedTopicIds)
         {
             try
             {
-                var query = new GetAllByTopicIdQuery { TopicId = id };
-                var blogs = await sender.Send(query);
+                if (selectedTopicIds == null || selectedTopicIds.Length == 0)
+                {
+                    return BadRequest("No topics selected");
+                    
+                }
 
-                return Json(blogs);
+                Console.WriteLine($"Selected Topic IDs: {string.Join(", ", selectedTopicIds)}");
+
+                var getAllByTopicIdQuery = new GetAllByTopicIdQuery
+                {
+                    TopicId = selectedTopicIds.First()
+                };
+
+                var blogs = await this.sender.Send(getAllByTopicIdQuery);
+                return View("Blog", blogs);
             }
-            catch (ArgumentException ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
-        [HttpPost]
-        [Route("[controller]/[action]")]
-        public async Task<IActionResult> GetBlogsByTopic(List<int> selectedTopicIds)
-        {
-            if (selectedTopicIds == null || selectedTopicIds.Count < 3)
-            {
-                ModelState.AddModelError("", "Please choose at least three topics.");
-                return BadRequest(ModelState);
-            }
 
-            try
-            {
-                //var filteredBlogs = await sender.Send(new GetBlogsByTopicIdsQuery { TopicIds = selectedTopicIds });
+        // [HttpGet]
+        // [Route("/Blog/GetBlogsByTopicLoginned")]
+        // public async Task<IActionResult> GetBlogsByTopicLoginned(){
 
-                return View("Blog");
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+        //     return View();
+        // }
+
+
 
 
         [HttpGet("[controller]/[action]/{id}")]
-        public async Task<IActionResult> Image(GetByIdQuery getByIdQuery)
+        public async Task<IActionResult> Image(int id)
         {
-            var blog = await this.sender.Send(getByIdQuery);
+            var blogQuery = new GetByIdQuery
+            {
+                Id = id,
+            };
+            var blog = await this.sender.Send(blogQuery);
             if (blog == null || string.IsNullOrEmpty(blog.PictureUrl))
             {
                 return NotFound("Film or image not found.");
