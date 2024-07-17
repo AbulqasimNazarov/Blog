@@ -59,7 +59,7 @@ namespace BlogApp.Presentation.Controllers
         {
             try
             {
-                var user = await userManager.FindByEmailAsync(loginDto.Email);
+                var user = await userManager.FindByEmailAsync(loginDto.Email!);
 
                 if (user == null)
                 {
@@ -79,9 +79,9 @@ namespace BlogApp.Presentation.Controllers
                 var tokenData = $"{loginDto.Email}:{loginDto.Name}";
                 var token = dataProtector.Protect(tokenData);
                 var confirmationLink = Url.Action("ConfirmLogin", "Identity", new { token }, Request.Scheme);
-                var message = $"Please confirm your login by clicking on the link: {HtmlEncoder.Default.Encode(confirmationLink)}";
+                var message = $"Please confirm your login by clicking on the link: {HtmlEncoder.Default.Encode(confirmationLink!)}";
 
-                await emailService.SendEmailAsync(loginDto.Email, "Confirm your login", message);
+                await emailService.SendEmailAsync(loginDto.Email!, "Confirm your login", message);
 
                 return RedirectToRoute("ConfirmationView");
             }

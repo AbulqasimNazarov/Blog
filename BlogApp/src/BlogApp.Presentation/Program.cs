@@ -57,10 +57,6 @@ builder.Services.AddMediatR(configuration => {
     configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
 });
 
-builder.Services.AddTransient<IRequestHandler<GetAllTopicsByUserIdQuery, IEnumerable<Topic>>, GetAllTopicsByUserIdHandler>();
-builder.Services.AddTransient<IRequestHandler<GetAllQuery, IEnumerable<Topic>>, GetAllHandler>();
-builder.Services.AddTransient<IRequestHandler<GetAllByTopicIdQuery, IEnumerable<Blog>>, GetAllByTopicIdHandler>();
-//builder.Services.AddTransient<IRequestHandler<GetAllTopicsByUserIdQuery, IEnumerable<UserTopic>>, GetAllTopicsByUserIdHandler>();
 
 builder.Services.AddValidatorsFromAssemblyContaining<UserRegistrationValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<UserLoginValidator>();
@@ -68,12 +64,7 @@ builder.Services.AddValidatorsFromAssemblyContaining<UserLoginValidator>();
 builder.Services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Program>());
 
 builder.Services.AddScoped<IEmailService, EmailService>();
-// builder.Services.AddScoped<ITopicService, TopicService>();
-// builder.Services.AddScoped<IBlogService, BlogService>();
-// builder.Services.AddScoped<IConfiguration>(provider => builder.Configuration);
 
-// builder.Services.AddScoped<IRoleRepository, RoleDapperRepository>();
-// builder.Services.AddScoped<IUserRoleRepository, UserRoleDapperRepository>();
 builder.Services.AddScoped<IUserTopicRepository, UserTopicEfCoreRepository>();
 builder.Services.AddScoped<ITopicRepository, TopicEfCoreRepository>();
 builder.Services.AddScoped<IBlogRepository, BlogEfCoreRepository>();
@@ -84,8 +75,6 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LoginPath = "/Identity/Login";
         options.AccessDeniedPath = "/Identity/AccessDenied";
     });
-
-
 
 
 
