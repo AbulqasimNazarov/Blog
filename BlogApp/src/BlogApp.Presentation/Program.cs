@@ -54,7 +54,8 @@ builder.Services.AddIdentity<User, Role>(options =>
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddMediatR(configuration => {
-    configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+    Type typeInReferencedAssembly = typeof(BlogApp.Infrastructure.Data.DbContext.BlogDbContext);
+    configuration.RegisterServicesFromAssembly( typeInReferencedAssembly.Assembly );
 });
 
 

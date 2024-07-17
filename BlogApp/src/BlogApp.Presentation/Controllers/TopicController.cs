@@ -33,7 +33,7 @@ public class TopicController : Controller
         }
     }
 
-    [HttpGet("[controller]/[actrion]/{userId}")]
+    [HttpGet("[controller]/[action]/{userId}")]
     public async Task<IActionResult> CreatePreferences(int userId)
     {
         try
