@@ -60,14 +60,13 @@ public class BlogController : Controller
     }
 
     [HttpGet("[controller]")]
-    public async Task<IActionResult> Index()
+    public async Task<IActionResult> Index(int userId)
     {
         try
         {
-            int.TryParse(base.User.Claims.Where(c => c.Type == "id").FirstOrDefault()?.Value, out int currentUserId);
             var getAllTopicsByUserIdQuery = new GetAllTopicsByUserIdQuery()
             {
-                UserId = currentUserId,
+                UserId = userId,
             };
 
             var preferableTopics = await sender.Send(getAllTopicsByUserIdQuery);
