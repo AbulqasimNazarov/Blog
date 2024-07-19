@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Choose Tags";
-
+    var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
 }
 
 
@@ -21,7 +21,7 @@
 </style>
 
 
-<div class="topic-page">
+<div class="topic-page" data-user-id="@userId">
     <div class="container">
         <div class="wrapper">
             <header class="header">
@@ -64,15 +64,35 @@
             selectedTopics.push(topicId);
             button.classList.add('selected');
         }
+        console.log('Selected Topics:', selectedTopics);
     }
 
     function submitSelectedTopics() {
         if (selectedTopics.length >= 3) {
-            const queryString = selectedTopics.map(id => `selectedTopicIds=${id}`).join('&');
-            const url = `/Blog/GetBlogsByTopic?${queryString}`;
-            window.location.href = url;
+            const userId = document.querySelector('.topic-page').getAttribute('data-user-id');
+
+            fetch(`/Topic/CreatePreferences/${userId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ topics: selectedTopics })
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = `/Blog/Index?userId=${userId}`;
+                } else {
+                    throw new Error('Something went wrong');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            });
         } else {
             alert('Please choose at least three topics.');
         }
     }
 </script>
+
+

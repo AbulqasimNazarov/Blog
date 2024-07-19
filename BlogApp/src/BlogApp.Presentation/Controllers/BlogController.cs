@@ -39,7 +39,7 @@ public class BlogController : Controller
         }
     }
 
-    [HttpGet("api/[action]", Name = "GetBlogsByTopic")]
+    [HttpGet("api/[action]")]
     public async Task<IEnumerable<Blog?>?> GetBlogsByTopic(int topicId)
     {
         try
@@ -59,18 +59,17 @@ public class BlogController : Controller
         }
     }
 
-    [HttpGet("[controller]")]
+    [HttpGet("Blog/Index")]
     public async Task<IActionResult> Index(int userId)
     {
         try
         {
-            var getAllTopicsByUserIdQuery = new GetAllTopicsByUserIdQuery()
-            {
+            var getAllBlogsByUserIdQuery = new GetAllByUserIdQuery()            {
                 UserId = userId,
             };
 
-            var preferableTopics = await sender.Send(getAllTopicsByUserIdQuery);
-            return View(preferableTopics);
+                var blogs = await sender.Send(getAllBlogsByUserIdQuery);
+                return View("Blog", blogs);
         }
         catch(Exception ex)
         {
