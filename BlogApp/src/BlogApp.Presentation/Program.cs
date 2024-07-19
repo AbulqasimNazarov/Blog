@@ -12,27 +12,12 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using BlogApp.Infrastructure.Data.DbContext;
-
-using BlogApp.Infrastructure.Topic.Repositories.Dapper;
-using BlogApp.Infrastructure.Blog.Repositories.Dapper;
-using BlogApp.Core.Blog.Models;
-using BlogApp.Infrastructure.UserTopic.Repositories.Dapper;
 using Microsoft.AspNetCore.Identity;
-using System.Reflection;
-using BlogApp.Infrastructure.Topic.Queries;
-using MediatR;
-using BlogApp.Core.Topic.Models;
-using BlogApp.Infrastructure.Topic.Handlers;
 using BlogApp.Core.Topic.Repositories.Base;
 using BlogApp.Infrastructure.Topic.Repositories.Ef_Core;
-using BlogApp.Infrastructure.Blog.Queries;
-using BlogApp.Infrastructure.Blog.Handlers;
 using BlogApp.Infrastructure.Blog.Repositories.Ef_Core;
 using BlogApp.Core.UserTopic.Repositories.Base;
 using BlogApp.Infrastructure.UserTopic.Repositories.Ef_Core;
-using BlogApp.Infrastructure.UserTopic.Queries;
-using BlogApp.Core.UserTopic.Models;
-using BlogApp.Infrastructure.UserTopic.Handlers;
 
 
 
@@ -54,13 +39,10 @@ builder.Services.AddIdentity<User, Role>(options =>
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddMediatR(configuration => {
-    configuration.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
+    Type typeInReferencedAssembly = typeof(BlogApp.Infrastructure.Data.DbContext.BlogDbContext);
+    configuration.RegisterServicesFromAssembly( typeInReferencedAssembly.Assembly );
 });
 
-builder.Services.AddTransient<IRequestHandler<GetAllTopicsByUserIdQuery, IEnumerable<Topic>>, GetAllTopicsByUserIdHandler>();
-builder.Services.AddTransient<IRequestHandler<GetAllQuery, IEnumerable<Topic>>, GetAllHandler>();
-builder.Services.AddTransient<IRequestHandler<GetAllByTopicIdQuery, IEnumerable<Blog>>, GetAllByTopicIdHandler>();
-//builder.Services.AddTransient<IRequestHandler<GetAllTopicsByUserIdQuery, IEnumerable<UserTopic>>, GetAllTopicsByUserIdHandler>();
 
 builder.Services.AddValidatorsFromAssemblyContaining<UserRegistrationValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<UserLoginValidator>();
@@ -68,12 +50,7 @@ builder.Services.AddValidatorsFromAssemblyContaining<UserLoginValidator>();
 builder.Services.AddControllers().AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Program>());
 
 builder.Services.AddScoped<IEmailService, EmailService>();
-// builder.Services.AddScoped<ITopicService, TopicService>();
-// builder.Services.AddScoped<IBlogService, BlogService>();
-// builder.Services.AddScoped<IConfiguration>(provider => builder.Configuration);
 
-// builder.Services.AddScoped<IRoleRepository, RoleDapperRepository>();
-// builder.Services.AddScoped<IUserRoleRepository, UserRoleDapperRepository>();
 builder.Services.AddScoped<IUserTopicRepository, UserTopicEfCoreRepository>();
 builder.Services.AddScoped<ITopicRepository, TopicEfCoreRepository>();
 builder.Services.AddScoped<IBlogRepository, BlogEfCoreRepository>();
@@ -86,10 +63,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 
 
-
-
-
-
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -108,8 +82,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 
-// app.UseSwagger();
-// app.UseSwaggerUI();
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseAuthentication();
 app.UseAuthorization();

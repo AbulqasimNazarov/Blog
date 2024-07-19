@@ -21,6 +21,6 @@ public class GetAllByNameHandler : IRequestHandler<GetAllByNameQuery, IEnumerabl
             throw new ArgumentException("incorrect param of search");
         }
 
-        return await repository.GetAllByName(request.Name);
+        return await repository.GetAllByNameAsync(request.Name);
     }
 }

@@ -19,6 +19,6 @@ public class GetAllByUserIdHandler : IRequestHandler<GetAllByUserIdQuery, IEnume
             throw new ArgumentException("userId is incorrect");
         }
 
-        return await repository.GetAllByUserId(request.UserId.Value);
+        return await repository.GetAllByUserIdAsync(request.UserId.Value);
     }
 }

@@ -14,13 +14,13 @@ public class BlogConfiguration : IEntityTypeConfiguration<Blog>
 
         builder
             .HasOne(b => b.User)
-            .WithOne()
+            .WithMany()
             .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
 
         builder
             .HasOne(b => b.Topic)
-            .WithOne()
+            .WithMany()
             .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
 

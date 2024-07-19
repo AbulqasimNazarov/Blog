@@ -6,5 +6,6 @@ using BlogApp.Core.Base.Methods;
 
 public interface IUserTopicRepository : ICreateAsync<UserTopic>, IDeleteAsync<UserTopic>
 {
-    public Task<IEnumerable<Topic?>> GetAllTopicsByUserId(int userId);
+    public Task<IEnumerable<Topic?>> GetAllTopicsByUserIdAsync(int userId);
+    public Task CreateListAsync(IEnumerable<UserTopic> userTopics);
 }

@@ -21,19 +21,20 @@ public class BlogEfCoreRepository : IBlogRepository
     public async Task CreateAsync(Blog blog)
     {
         await dbContext.Blogs.AddAsync(blog);
+        await dbContext.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<Blog?>> GetAllByName(string name)
+    public async Task<IEnumerable<Blog?>> GetAllByNameAsync(string name)
     {
         return dbContext.Blogs.Where(blog => blog.Title.StartsWith(name));
     }
 
-    public async Task<IEnumerable<Blog?>> GetAllByTopicId(int topicId)
+    public async Task<IEnumerable<Blog?>> GetAllByTopicIdAsync(int topicId)
     {
         return dbContext.Blogs.Where(blog => blog.TopicId == topicId);
     }
 
-    public async Task<IEnumerable<Blog?>> GetAllByUserId(int userId)
+    public async Task<IEnumerable<Blog?>> GetAllByUserIdAsync(int userId)
     {
         return dbContext.Blogs.Where(blog => blog.TopicId == userId);
     }

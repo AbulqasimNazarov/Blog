@@ -11,7 +11,6 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        
         return base.RedirectToRoute("LoginView");
     }
 
