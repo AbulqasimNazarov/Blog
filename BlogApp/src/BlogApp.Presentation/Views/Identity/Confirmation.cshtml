@@ -1,4 +1,4 @@
-@* @model BlogApp.Core.Dtos.RegistrationDto *@
+@model BlogApp.Core.Dtos.Models.RegistrationDto
 
 
 @{
@@ -13,7 +13,7 @@
                 <div class="inbox">
                     <img src="../../Assets/IMG/mail.png" alt="">
                     <h1>Check<br>your inbox</h1>
-                    <p>Click the link we sent to<br> to sign up.</p>
+                    <p>Click the link we sent to<br>@Model.Email to sign up.</p>
                 </div>
             </div>
         </div>
