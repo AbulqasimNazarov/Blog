@@ -90,20 +90,7 @@
     </div>
 
     <div class="blog-list" id="blog-list">
-        @if (Model != null)
-        {
-            foreach (var blog in Model)
-            {
-                <div class="blog-item">
-                    <a href="#">
-                        <div class="content">
-                            <div class="title">@blog.Title</div>
-                        </div>
-                        <img class="blog-img" src="@blog.PictureUrl" alt="@blog.Title">
-                    </a>
-                </div>
-            }
-        }
+        
     </div>
 </div>
 
