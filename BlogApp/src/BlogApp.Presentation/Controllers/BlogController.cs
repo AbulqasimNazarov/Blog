@@ -39,7 +39,7 @@ public class BlogController : Controller
         }
     }
 
-    [HttpGet("api/[action]")]
+    [HttpGet("api/[action]", Name = "GetBlogsByTopic")]
     public async Task<IEnumerable<Blog?>?> GetBlogsByTopic(int topicId)
     {
         try
