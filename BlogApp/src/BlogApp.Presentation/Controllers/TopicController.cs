@@ -33,7 +33,7 @@ public class TopicController : Controller
         }
     }
 
-    [HttpGet("[controller]/[action]/{userId}")]
+    [HttpPost("[controller]/[action]/{userId}")]
     public async Task<IActionResult> CreatePreferences([FromBody]IEnumerable<Topic> topics, int userId)
     {
         try
