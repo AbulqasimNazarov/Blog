@@ -84,12 +84,12 @@ public class BlogController : Controller
     {
         try
         {
-            var getBlogCommand = new GetCommand()
+            var getBlogQuery = new GetByIdQuery()
             {
-                BserId = blogId,
+                Id = blogId,
             };
 
-            var blog = await sender.Send(getBlogCommand);
+            var blog = await sender.Send(getBlogQuery);
             return View(blog);
         }
         catch (ArgumentException ex)
