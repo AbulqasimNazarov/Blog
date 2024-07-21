@@ -6,7 +6,7 @@ using BlogApp.Infrastructure.Topic.Queries;
 using BlogApp.Core.Topic.Models;
 using System.Text.Json;
 using BlogApp.Infrastructure.UserTopic.Commands;
-
+using BlogApp.Infrastructure.UserTopic.Queries;
 
 public class TopicController : Controller
 {
@@ -51,6 +51,24 @@ public class TopicController : Controller
         catch (Exception)
         {
             return RedirectToAction(controllerName: "Topic", actionName: "ChooseTags");
+        }
+    }
+
+    [HttpGet("[controller]/GetSelectedTopics")]
+    public async Task<ActionResult<IEnumerable<Topic>>> GetSelectedTopics(int userId)
+    {
+        try
+        {
+            var getSelectedTopicsQuery = new GetAllTopicsByUserIdQuery
+            {
+                UserId = userId
+            };
+            var topics = await sender.Send(getSelectedTopicsQuery);
+            return Ok(topics);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, ex.Message);
         }
     }
 
