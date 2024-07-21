@@ -16,14 +16,36 @@ public class CreateListHandler : IRequestHandler<CreateListCommand>
     {
         this.repository = repository;
     }
+    // public async Task<int> Handle(CreateListCommand request, CancellationToken cancellationToken)
+    // {
+        
+    //     if(request.UserId <= 0) {
+    //         throw new ArgumentException("userId is incorrect");
+    //     }
+
+    //     var areValid = request?.Topics?.Any(topic => topic is null || topic.Id <= 0) ?? false;
+
+    //     if(areValid)
+    //     {
+    //         throw new ArgumentException("topics are incorrect");
+    //     }
+
+    //     var userTopics = request?.Topics?.Select(topic => new UserTopic()
+    //     {
+    //         UserId = request.UserId,
+    //         TopicId = topic.Id
+    //     });
+
+    //     await repository.CreateListAsync(userTopics!);
+    // }
+
     public async Task Handle(CreateListCommand request, CancellationToken cancellationToken)
     {
-        
         if(request.UserId <= 0) {
             throw new ArgumentException("userId is incorrect");
         }
 
-        var areValid = request?.Topics?.Any(topic => topic is null || topic.Id <= 0) ?? false;
+        var areValid = request?.Topics?.Any(topic => topic is 0 || topic <= 0) ?? false;
 
         if(areValid)
         {
@@ -33,7 +55,7 @@ public class CreateListHandler : IRequestHandler<CreateListCommand>
         var userTopics = request?.Topics?.Select(topic => new UserTopic()
         {
             UserId = request.UserId,
-            TopicId = topic.Id
+            TopicId = topic
         });
 
         await repository.CreateListAsync(userTopics!);
