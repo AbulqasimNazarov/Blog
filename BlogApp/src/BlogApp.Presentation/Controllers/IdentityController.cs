@@ -116,7 +116,7 @@ namespace BlogApp.Presentation.Controllers
 
             await signInManager.SignInAsync(user, isPersistent: true);
 
-            return RedirectToRoute("GetBlogsByTopic");
+            return RedirectToAction("Index", "Blog", new { userId = user.Id });
         }
 
         [HttpGet]
