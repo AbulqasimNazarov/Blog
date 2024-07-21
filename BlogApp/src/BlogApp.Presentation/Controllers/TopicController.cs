@@ -34,13 +34,14 @@ public class TopicController : Controller
     }
 
     [HttpPost("[controller]/[action]/{userId}")]
+<<<<<<< HEAD
     public async Task<IActionResult> CreatePreferences(int userId)
+=======
+    public async Task<IActionResult> CreatePreferences([FromBody]IEnumerable<Topic> topics, int userId)
+>>>>>>> bf700d42af7ede63a7d5dc3cc62c40195e41b4dd
     {
         try
-        {
-            var topicsJson = this.HttpContext.Request.Headers["topics"];
-            var topics = JsonSerializer.Deserialize<IEnumerable<Topic?>?>(topicsJson!);
-            
+        {        
             var createListCommand = new CreateListCommand()
             {
                 Topics = topics,

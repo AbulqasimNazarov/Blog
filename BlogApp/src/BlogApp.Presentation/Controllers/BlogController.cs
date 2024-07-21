@@ -78,6 +78,29 @@ public class BlogController : Controller
 
     }
 
+    [HttpGet("[controller]/{blogId}")]
+    public async Task<IActionResult> GetBlog(int blogId)
+    {
+        try
+        {
+            var getBlogQuery = new GetByIdQuery()
+            {
+                Id = blogId,
+            };
+
+            var blog = await sender.Send(getBlogQuery);
+            return View(blog);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch(Exception ex)
+        {
+            return StatusCode(500, ex.Message);
+        }
+    }
+
 
     // [HttpGet("[controller]/[action]/{id}")]
     // public async Task<IActionResult> Image(int id) //what does it do???
@@ -108,7 +131,8 @@ public class BlogController : Controller
                 Text = newBlog.Text,
                 UserId = newBlog.UserId,
                 TopicId = newBlog.TopicId,
-                CreationDate = DateTime.Now
+                CreationDate = DateTime.Now,
+                
             };
 
             await sender.Send(createCommand);
