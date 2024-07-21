@@ -1,4 +1,5 @@
-@model IEnumerable<BlogApp.Core.Blog.Models.Blog>
+@* @model IEnumerable<BlogApp.Core.Blog.Models.Blog> *@
+@model IEnumerable<BlogApp.Core.Topic.Models.Topic>
 
 @{
     ViewData["Title"] = "Blogs";
@@ -49,10 +50,10 @@
                             <select class="topicId" name="TopicId" required>
                                 @if (Model != null)
                                 {
-                                    @foreach (var blog in Model)
+                                    @* @foreach (var blog in Model)
                                     {
                                         <option value="@blog.TopicId">@blog.Topic.Name</option>
-                                    }
+                                    } *@
                                 }
                             </select>
                         </div>
@@ -81,13 +82,13 @@
     </div>
     <div class="menu" id="menu">
         <div class="menu-content menu-items dragscroll">
-            @* @if (Model != null)
+            @if (Model != null)
             {
                 @foreach (var blog in Model)
                 {
-                    <a class="menu-item" id="topic-@blog.TopicId" href="javascript:void(0);" onclick="setActiveTopic(@blog.TopicId)">@blog.Topic.Name</a>
+                    <a class="menu-item" id="topic-@blog.Id" href="javascript:void(0);" onclick="setActiveTopic(@blog.Id)">@blog.Name</a>
                 }
-            } *@
+            }
         </div>  
     </div>
 
@@ -97,6 +98,33 @@
 </div>
 
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const userId = '@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value';
+
+        fetch(`/Blog/Index/?userId=${userId}`)
+            .then(response => response.json())
+            .then(topics => {
+                const menuContent = document.querySelector('.menu-content');
+                menuContent.innerHTML = '';
+
+                topics.forEach(topic => {
+                    const topicItem = document.createElement('a');
+                    topicItem.className = 'menu-item';
+                    topicItem.id = 'topic-' + topic.Id;
+                    topicItem.href = 'javascript:void(0);';
+                    topicItem.textContent = topic.Name;
+                    topicItem.onclick = function() {
+                        setActiveTopic(topic.Id);
+                    };
+                    menuContent.appendChild(topicItem);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching topics:', error);
+                alert('Failed to load topics');
+            });
+    });
+
     document.getElementById('searchForm').addEventListener('submit', function(event) {
         event.preventDefault();
 
@@ -149,30 +177,6 @@
             console.error('Error:', error);
             alert('Failed to create blog');
         });
-    });
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const userId = '@userId';
-        fetch(`/Topic/GetSelectedTopics?userId=${userId}`)
-            .then(response => response.json())
-            .then(topics => {
-                let menuContent = document.querySelector('.menu-content');
-                menuContent.innerHTML = '';
-                topics.forEach(topic => {
-                    let topicItem = document.createElement('a');
-                    topicItem.className = 'menu-item';
-                    topicItem.id = 'topic-' + topic.id;
-                    topicItem.href = 'javascript:void(0);';
-                    topicItem.onclick = function() {
-                        setActiveTopic(topic.id);
-                    };
-                    topicItem.textContent = topic.name;
-                    menuContent.appendChild(topicItem);
-                });
-            })
-            .catch(error => {
-                console.error('Error fetching topics:', error);
-            });
     });
 
     function setActiveTopic(topicId) {

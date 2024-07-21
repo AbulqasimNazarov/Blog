@@ -34,42 +34,28 @@ public class TopicController : Controller
     }
 
     [HttpPost("[controller]/[action]/{userId}")]
-    public async Task<IActionResult> CreatePreferences([FromBody]IEnumerable<Topic> topics, int userId)
+    public async Task<IActionResult> CreatePreferences([FromBody]IEnumerable<int> topics, int userId)
     {
         try
-        {        
+        {  
+            var topicTasks = topics.Select(async id => await sender.Send(new GetByIdQuery { Id = id }));
+            var topicList = await Task.WhenAll(topicTasks);
+
+            var validTopics = topicList.Where(topic => topic != null).ToList();
+
             var createListCommand = new CreateListCommand()
             {
-                Topics = topics,
+                Topics = validTopics,
                 UserId = userId
             };
 
             await sender.Send(createListCommand);
 
-            return RedirectToAction(controllerName: "Blog", actionName: "Index");
+            return RedirectToAction("Index", "Blog", new { userId });
         }
         catch (Exception)
         {
             return RedirectToAction(controllerName: "Topic", actionName: "ChooseTags");
         }
     }
-
-    [HttpGet("[controller]/GetSelectedTopics")]
-    public async Task<ActionResult<IEnumerable<Topic>>> GetSelectedTopics(int userId)
-    {
-        try
-        {
-            var getSelectedTopicsQuery = new GetAllTopicsByUserIdQuery
-            {
-                UserId = userId
-            };
-            var topics = await sender.Send(getSelectedTopicsQuery);
-            return Ok(topics);
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(500, ex.Message);
-        }
-    }
-
 }

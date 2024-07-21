@@ -64,12 +64,14 @@ public class BlogController : Controller
     {
         try
         {
-            var getAllBlogsByUserIdQuery = new GetAllByUserIdQuery()            {
+            var getAllTopicsByUserIdQuery = new GetAllTopicsByUserIdQuery()
+            {
                 UserId = userId,
             };
 
-                var blogs = await sender.Send(getAllBlogsByUserIdQuery);
-                return View("Blog", blogs);
+            var preferableTopics = await sender.Send(getAllTopicsByUserIdQuery);
+            
+            return View(preferableTopics);
         }
         catch(Exception ex)
         {
