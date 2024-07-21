@@ -34,11 +34,7 @@ public class TopicController : Controller
     }
 
     [HttpPost("[controller]/[action]/{userId}")]
-<<<<<<< HEAD
-    public async Task<IActionResult> CreatePreferences(int userId)
-=======
     public async Task<IActionResult> CreatePreferences([FromBody]IEnumerable<Topic> topics, int userId)
->>>>>>> bf700d42af7ede63a7d5dc3cc62c40195e41b4dd
     {
         try
         {        
