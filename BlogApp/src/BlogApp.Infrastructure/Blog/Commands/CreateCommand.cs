@@ -9,4 +9,5 @@ public class CreateCommand : IRequest
     public int? TopicId { get; set; }
     public int? UserId { get; set; }
     public DateTime? CreationDate{set; get;}
+    public string? PictureUrl { get; set; }
 }

@@ -79,7 +79,8 @@ namespace BlogApp.Presentation.Controllers
                 var message = $"Please confirm your login by clicking on the link: {HtmlEncoder.Default.Encode(confirmationLink!)}";
 
                 await emailService.SendEmailAsync(loginDto.Email!, "Confirm your login", message);
-
+                TempData["Email"] = loginDto.Email;
+                
                 return RedirectToRoute("ConfirmationView");
             }
             catch (Exception ex)
@@ -152,6 +153,7 @@ namespace BlogApp.Presentation.Controllers
                 var message = $"Please confirm your registration by clicking on the link: {HtmlEncoder.Default.Encode(confirmationLink)}";
 
                 await emailService.SendEmailAsync(registrationDto.Email, "Confirm your email", message);
+                TempData["Email"] = registrationDto.Email;
             }
             catch (Exception ex)
             {
@@ -203,7 +205,10 @@ namespace BlogApp.Presentation.Controllers
         [Route("[controller]/[action]", Name = "ConfirmationView")]
         public IActionResult Confirmation()
         {
-            return View();
+            string email = TempData["Email"] as string;
+
+            var model = new RegistrationDto { Email = email };
+            return View(model);
         }
     }
 }
