@@ -102,21 +102,21 @@ public class BlogController : Controller
     }
 
 
-    // [HttpGet("[controller]/[action]/{id}")]
-    // public async Task<IActionResult> Image(int id) //what does it do???
-    // {
-    //     var blogQuery = new GetByIdQuery
-    //     {
-    //         Id = id,
-    //     };
-    //     var blog = await this.sender.Send(blogQuery);
-    //     if (blog == null || string.IsNullOrEmpty(blog.PictureUrl))
-    //     {
-    //         return NotFound("Film or image not found.");
-    //     }
-    //     var fileStream = System.IO.File.Open(blog.PictureUrl!, FileMode.Open);
-    //     return File(fileStream, "image/jpeg");
-    // }
+    [HttpGet("[controller]/[action]/{id}")]
+    public async Task<IActionResult> Image(int id) 
+    {
+        var blogQuery = new GetByIdQuery
+        {
+            Id = id,
+        };
+        var blog = await this.sender.Send(blogQuery);
+        if (blog == null || string.IsNullOrEmpty(blog.PictureUrl))
+        {
+            return NotFound("Blog or image not found.");
+        }
+        var fileStream = System.IO.File.Open(blog.PictureUrl!, FileMode.Open);
+        return File(fileStream, "image/jpeg");
+    }
 
 
 
@@ -125,6 +125,25 @@ public class BlogController : Controller
     {
         try
         {
+            var randomId = Random.Shared.Next(1, 100000);
+            var getBlogQuery = new GetByIdQuery()
+            {
+                Id = randomId,
+            };
+
+            var blog = await sender.Send(getBlogQuery);
+            if (blog != null){
+                randomId = Random.Shared.Next(1, 100000);
+            }
+            newBlog.Id = randomId;
+
+            var extension = new FileInfo(image.FileName).Extension[1..];
+            newBlog.PictureUrl = $"Assets/BlogImg/{newBlog.Id}.{extension}";
+
+            using var newFileStream = System.IO.File.Create(newBlog.PictureUrl);
+            await image.CopyToAsync(newFileStream);
+
+
             var createCommand = new CreateCommand()
             {
                 Title = newBlog.Title,
@@ -132,7 +151,7 @@ public class BlogController : Controller
                 UserId = newBlog.UserId,
                 TopicId = newBlog.TopicId,
                 CreationDate = DateTime.Now,
-                PictureUrl = image.FileName
+                
             };
 
             await sender.Send(createCommand);
