@@ -133,7 +133,7 @@ public class BlogController : Controller
                 UserId = newBlog.UserId,
                 TopicId = newBlog.TopicId,
                 CreationDate = DateTime.Now,
-                
+                PictureUrl = image.FileName
             };
 
             await sender.Send(createCommand);
