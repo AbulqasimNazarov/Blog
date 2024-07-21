@@ -88,7 +88,7 @@ namespace BlogApp.Presentation.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("/[controller]/[action]", Name = "ConfirmLogin")]
         public async Task<IActionResult> ConfirmLogin(string token)
         {
@@ -162,7 +162,7 @@ namespace BlogApp.Presentation.Controllers
             return RedirectToRoute("ConfirmationView");
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("/[controller]/[action]", Name = "ConfirmEmail")]
         public async Task<IActionResult> ConfirmEmail(string token)
         {
