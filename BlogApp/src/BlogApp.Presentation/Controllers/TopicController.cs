@@ -50,7 +50,7 @@ public class TopicController : Controller
             };
 
             await sender.Send(createListCommand);
-
+            
             return RedirectToAction("Index", "Blog", new { userId });
         }
         catch (Exception)

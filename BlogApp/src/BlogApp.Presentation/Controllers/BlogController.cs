@@ -39,7 +39,7 @@ public class BlogController : Controller
         }
     }
 
-    [HttpGet("api/[action]")]
+    [HttpGet("api/GetBlogsByTopic")]
     public async Task<IEnumerable<Blog?>?> GetBlogsByTopic(int topicId)
     {
         try
@@ -68,7 +68,7 @@ public class BlogController : Controller
             {
                 UserId = userId,
             };
-
+        
             var preferableTopics = await sender.Send(getAllTopicsByUserIdQuery);
             
             return View(preferableTopics);

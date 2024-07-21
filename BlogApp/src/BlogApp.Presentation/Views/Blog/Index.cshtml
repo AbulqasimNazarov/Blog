@@ -121,7 +121,6 @@
             })
             .catch(error => {
                 console.error('Error fetching topics:', error);
-                alert('Failed to load topics');
             });
     });
 
@@ -143,7 +142,10 @@
                     <a href="#">
                         <div class="blog-item">
                             <div class="content">
+                                <div class="author">Author: ${blog.User.AvatarUrl ? blog.User.Name : 'Unknown'}</div>
+                                <div class="author">Author: ${blog.User ? blog.User.Name : 'Unknown'}</div>
                                 <div class="title">${blog.Title}</div>
+                                <div class="date">${new Date(blog.CreationDate).toLocaleDateString()}</div>
                             </div>
                             <img class="blog-img" src="${blog.PictureUrl}" alt="${blog.Title}">
                         </div>
@@ -175,7 +177,6 @@
         })
         .catch(error => {
             console.error('Error:', error);
-            alert('Failed to create blog');
         });
     });
 
@@ -185,7 +186,7 @@
         });
         document.getElementById('topic-' + topicId).classList.add('active');
 
-        fetch('api/Blog/GetBlogsByTopic?topicId=' + topicId)
+        fetch('/api/GetBlogsByTopic?topicId=' + topicId)
             .then(response => response.json())
             .then(blogs => {
                 let blogList = document.getElementById('blog-list');
