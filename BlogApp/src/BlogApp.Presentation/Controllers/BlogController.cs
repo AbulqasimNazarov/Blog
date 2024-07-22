@@ -92,7 +92,7 @@ public class BlogController : Controller
 
             var blog = await sender.Send(getBlogQuery);
             ViewBag.Blog = blog;
-
+            ViewBag.IsBlogDetail = true;
             return View("Index");
         }
         catch (ArgumentException ex)
