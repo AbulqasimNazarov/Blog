@@ -110,6 +110,7 @@ public class BlogController : Controller
         var blogQuery = new GetByIdQuery
         {
             Id = id,
+            
         };
         var blog = await this.sender.Send(blogQuery);
         if (blog == null || string.IsNullOrEmpty(blog.PictureUrl))
