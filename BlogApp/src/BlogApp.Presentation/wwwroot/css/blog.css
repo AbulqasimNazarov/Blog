@@ -316,3 +316,75 @@
 .menu-item.active {
     color: #9BD21C;
 }
+
+.blog-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.blog-right-side {
+    width: 300px;
+    color: white;
+    padding: 20px;
+    margin-top: -85px;
+}
+
+.recommendation-block, .follow-block {
+    margin-bottom: 20px;
+}
+
+.recommendation-block h2, .follow-block h2 {
+    margin-bottom: 25px;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.recommendation-block-topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.recommendation-block-topics button {
+    border: none;
+    border-radius: 20px;
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 25px;
+    background-color: #fff;
+    color: #000;
+    cursor: pointer;
+    margin: 5px;
+    transition: background-color 0.3s;
+}
+
+.recommendation-block-topics button:hover {
+    background-color: #9BD21C;
+}
+
+.person {
+    margin-bottom: 15px;
+}
+
+.person h5 {
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.person p {
+    margin: 5px 0;
+    font-size: 12px;
+    font-weight: 400;
+    color: #727276;
+}
+
+.follow-button {
+    background-color: #333;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: white;
+    cursor: pointer;
+}
