@@ -192,7 +192,11 @@
                     <a href="/Blog/${blog.id}" class="blog-link" data-id="${blog.id}">
                         <div class="blog-item">
                             <div class="content">
+<<<<<<< HEAD
                                 <div class="author">${blog.User ? blog.User.Name : 'Unknown'}</div>
+=======
+                                <div class="author">${blog.User ? blog.User.UserName : `Unknown`}</div>
+>>>>>>> 895add845fa351829bc978b297f854ea431bce42
                                 <div class="title">${blog.title}</div>
                                 <div class="date">${new Date(blog.creationDate).toLocaleDateString()}</div>
                             </div>

@@ -31,12 +31,16 @@ public class BlogEfCoreRepository : IBlogRepository
 
     public async Task<IEnumerable<Blog?>> GetAllByTopicIdAsync(int topicId)
     {
-        return dbContext.Blogs.Where(blog => blog.TopicId == topicId);
+        return dbContext.Blogs.Where(blog => blog.TopicId == topicId)
+            .Include(blog => blog.User)
+            .Include(blog => blog.Topic);
     }
 
     public async Task<IEnumerable<Blog?>> GetAllByUserIdAsync(int userId)
     {
-        return dbContext.Blogs.Where(blog => blog.TopicId == userId);
+        return dbContext.Blogs.Where(blog => blog.UserId == userId)
+            .Include(blog => blog.User)
+            .Include(blog => blog.Topic);
     }
 
     public async Task<Blog?> GetByIdAsync(int id)
