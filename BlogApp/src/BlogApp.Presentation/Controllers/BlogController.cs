@@ -91,6 +91,7 @@ public class BlogController : Controller
             };
 
             var blog = await sender.Send(getBlogQuery);
+            Console.WriteLine(blog.User.Name);
             return Json(blog);
         }
         catch (ArgumentException ex)

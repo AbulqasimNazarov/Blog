@@ -41,6 +41,9 @@ public class BlogEfCoreRepository : IBlogRepository
 
     public async Task<Blog?> GetByIdAsync(int id)
     {
-        return await dbContext.Blogs.Where(blog => blog.Id == id).FirstOrDefaultAsync();
+        return await dbContext.Blogs
+            .Include(blog => blog.User)    // загрузка данных о пользователе
+            .Include(blog => blog.Topic)   // загрузка данных о теме
+            .FirstOrDefaultAsync(blog => blog.Id == id);
     }
 }
