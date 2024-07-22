@@ -252,7 +252,12 @@
                         <a href="/Blog/${blog.id}" class="blog-link" data-id="${blog.id}">
                             <div class="blog-item">
                                 <div class="content">
-                                    <div class="author">${blog.User ? blog.User.Name : 'Unknown'}</div>
+                                    <div class="user-profile">
+                                        <div class="logo">
+                                            <img src="~/Assets/IMG/LogoImg.png" alt="Logo" />
+                                        </div>
+                                        <div class="author">${blog.User ? blog.User.Name : 'Unknown'}</div>
+                                    </div>
                                     <div class="title">${blog.title}</div>
                                     <div class="date">${new Date(blog.creationDate).toLocaleDateString()}</div>
                                 </div>
