@@ -317,6 +317,32 @@
     color: #9BD21C;
 }
 
+.content {
+    color: #fff;
+}
+
+.author {
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 25px;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 47px;
+}
+
+.date {
+    color: #727276;
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.user-profile {
+    display: flex;
+}
+
 .blog-container {
     display: flex;
     justify-content: space-between;
