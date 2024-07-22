@@ -19,7 +19,7 @@ public class BlogController : Controller
     }
 
 
-    [HttpGet("api/[controller]")]
+    [HttpGet("api/[controller]/SearchBlogsByName")]
     public async Task<IEnumerable<Blog?>?> SearchBlogsByName(string? name)
     {
         try

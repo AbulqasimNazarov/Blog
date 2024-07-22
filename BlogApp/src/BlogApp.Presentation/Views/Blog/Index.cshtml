@@ -162,36 +162,50 @@
 
         document.getElementById('searchForm').addEventListener('submit', function (event) {
             event.preventDefault();
+            console.log('Form submitted');
 
             const query = document.querySelector('input[name="query"]').value;
+            console.log('Query:', query);
 
             fetch(`/api/Blog/SearchBlogsByName?name=${encodeURIComponent(query)}`, {
                 method: 'GET'
             })
-                .then(response => response.json())
-                .then(data => {
-                    const blogList = document.getElementById('blog-list');
-                    blogList.innerHTML = '';
+            .then(response => {
+                console.log('Response status:', response.status);
+                if (!response.ok) {
+                    return response.text().then(text => { throw new Error(text); });
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Data received:', data);
 
-                    data.forEach(blog => {
-                        const blogItem = `
-                        <a href="/Blog/${blog.id}" class="blog-link" data-id="${blog.id}">
-                            <div class="blog-item">
-                                <div class="content">
-                                    <div class="author">${blog.user ? blog.user.name : 'Unknown'}</div>
-                                    <div class="title">${blog.title}</div>
-                                    <div class="date">${new Date(blog.creationDate).toLocaleDateString()}</div>
-                                </div>
-                                <img class="blog-img" src="/Blog/Image/${blog.id}" alt="${blog.title}">
-                            </div>
-                        </a>`;
-                        blogList.innerHTML += blogItem;
-                    });
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Failed to search blogs');
+                const blogList = document.getElementById('blog-list');
+                blogList.innerHTML = '';
+
+                document.querySelectorAll('.menu-item').forEach(item => {
+                    item.classList.remove('active');
                 });
+
+                data.forEach(blog => {
+                    const blogItem = `
+                    <a href="/Blog/${blog.id}" class="blog-link" data-id="${blog.id}">
+                        <div class="blog-item">
+                            <div class="content">
+                                <div class="author">${blog.user ? blog.user.name : 'Unknown'}</div>
+                                <div class="title">${blog.title}</div>
+                                <div class="date">${new Date(blog.creationDate).toLocaleDateString()}</div>
+                            </div>
+                            <img class="blog-img" src="/Blog/Image/${blog.id}" alt="${blog.title}">
+                        </div>
+                    </a>`;
+                    blogList.innerHTML += blogItem;
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to search blogs');
+            });
         });
 
         document.querySelector('.addBlogForm').addEventListener('submit', function (event) {
