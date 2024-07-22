@@ -33,7 +33,7 @@
                 <div class="modal-content">
                     <span class="close">&times;</span>
                     <h2>Add Blog</h2>
-                    <form class="addBlogForm" method="post" action="/Blog/Add" enctype="multipart/form-data">
+                    <form class="addBlogForm" method="post" action="/api/Blog/CreateBlog" enctype="multipart/form-data">
                         <div class="blog-picture">
                             <label class="blog-picture-title" for="pictureUrl">Add picture:</label>
                             <div class="custom-file">
@@ -50,10 +50,10 @@
                             <select class="topicId" name="TopicId" required>
                                 @if (Model != null)
                                 {
-                                    @* @foreach (var blog in Model)
+                                    @foreach (var topic in Model)
                                     {
-                                        <option value="@blog.TopicId">@blog.Topic.Name</option>
-                                    } *@
+                                        <option value="@topic.Id">@topic.Name</option>
+                                    }
                                 }
                             </select>
                         </div>
@@ -84,9 +84,9 @@
         <div class="menu-content menu-items dragscroll">
             @if (Model != null)
             {
-                @foreach (var blog in Model)
+                @foreach (var topic in Model)
                 {
-                    <a class="menu-item" id="topic-@blog.Id" href="javascript:void(0);" onclick="setActiveTopic(@blog.Id)">@blog.Name</a>
+                    <a class="menu-item" id="topic-@topic.Id" href="javascript:void(0);" onclick="setActiveTopic(@topic.Id)">@topic.Name</a>
                 }
             }
         </div>  
@@ -142,12 +142,13 @@
                     <a href="#">
                         <div class="blog-item">
                             <div class="content">
-                                <div class="author">Author: ${blog.User.AvatarUrl ? blog.User.Name : 'Unknown'}</div>
-                                <div class="author">Author: ${blog.User ? blog.User.Name : 'Unknown'}</div>
-                                <div class="title">${blog.Title}</div>
-                                <div class="date">${new Date(blog.CreationDate).toLocaleDateString()}</div>
+                                <div class="content">
+                                    <div class="author">${blog.userId.Name}</div>
+                                    <div class="title">${blog.title}</div>
+                                    <div class="date">${blog.CreationDate}</div>
+                                </div>
                             </div>
-                            <img class="blog-img" src="${blog.PictureUrl}" alt="${blog.Title}">
+                            <img class="blog-img" src="/Blog/Image/${blog.id}" alt="${blog.Title}">
                         </div>
                     </a>`;
                 blogList.innerHTML += blogItem;
@@ -164,7 +165,7 @@
 
         const formData = new FormData(this);
 
-        fetch('/api/Blog', {
+        fetch('/api/Blog/CreateBlog', {
             method: 'POST',
             body: formData
         })
@@ -196,9 +197,12 @@
                         <a href="#">
                             <div class="blog-item">
                                 <div class="content">
+                                    @* <div class="author">Author: ${blog.User.AvatarUrl ? blog.User.Name : 'Unknown'}</div> *@
+                                    @* <div class="author">${blog.userId.Name}</div> *@
                                     <div class="title">${blog.title}</div>
+                                    <div class="date">${new Date(blog.CreationDate).toLocaleDateString()}</div>
                                 </div>
-                                <img class="blog-img" src="${blog.pictureUrl}" alt="${blog.title}">
+                                <img class="blog-img" src="/Blog/Image/${blog.id}" alt="${blog.title}">
                             </div>
                         </a>`;
                     blogList.innerHTML += blogItem;

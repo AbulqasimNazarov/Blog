@@ -34,7 +34,8 @@ public class CreateHandler : IRequestHandler<CreateCommand>
             Text = request.Text,
             TopicId = request.TopicId.Value,
             UserId = request.UserId.Value,
-            PictureUrl = request.PictureUrl
+            PictureUrl = request.PictureUrl,
+            CreationDate = DateTime.UtcNow
         };
 
         await repository.CreateAsync(blog);

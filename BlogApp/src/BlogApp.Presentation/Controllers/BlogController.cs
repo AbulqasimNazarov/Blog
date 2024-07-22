@@ -122,11 +122,12 @@ public class BlogController : Controller
 
 
 
-    [HttpPost("api/[controller]")]
+    [HttpPost("api/Blog/CreateBlog")]
     public async Task<IActionResult> CreateBlog([FromForm] Blog newBlog, IFormFile image)
     {
         try
         {
+            var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "0");
             var randomId = Random.Shared.Next(1, 100000);
             var getBlogQuery = new GetByIdQuery()
             {
@@ -138,6 +139,7 @@ public class BlogController : Controller
                 randomId = Random.Shared.Next(1, 100000);
             }
             newBlog.Id = randomId;
+            newBlog.UserId = userId;
 
             var extension = new FileInfo(image.FileName).Extension[1..];
             newBlog.PictureUrl = $"Assets/BlogImg/{newBlog.Id}.{extension}";
@@ -145,6 +147,7 @@ public class BlogController : Controller
             using var newFileStream = System.IO.File.Create(newBlog.PictureUrl);
             await image.CopyToAsync(newFileStream);
 
+             newBlog.CreationDate = DateTime.UtcNow;
 
             var createCommand = new CreateCommand()
             {
@@ -152,13 +155,14 @@ public class BlogController : Controller
                 Text = newBlog.Text,
                 UserId = newBlog.UserId,
                 TopicId = newBlog.TopicId,
-                CreationDate = DateTime.Now,
+                PictureUrl = newBlog.PictureUrl,
+                CreationDate = newBlog.CreationDate,
                 
             };
 
             await sender.Send(createCommand);
 
-            return Ok();
+            return RedirectToAction("Index", "Blog", new { userId });
         }
         catch (ArgumentException ex)
         {

@@ -38,11 +38,6 @@ public class TopicController : Controller
     {
         try
         {  
-            // var topicTasks = topics.Select(async id => await sender.Send(new GetByIdQuery { Id = id }));
-            // var topicList = await Task.WhenAll(topicTasks);
-
-            // var validTopics = topicList.Where(topic => topic != null).ToList();
-
             var createListCommand = new CreateListCommand()
             {
                 Topics = topics,
