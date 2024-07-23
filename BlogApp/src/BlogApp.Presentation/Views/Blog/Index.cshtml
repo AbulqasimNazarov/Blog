@@ -246,19 +246,17 @@
             fetch('/api/GetBlogsByTopic?topicId=' + topicId)
                 .then(response => response.json())
                 .then(blogs => {
-                    console.log('Received blogs:', blogs); // Логируем полученные данные
                     let blogList = document.getElementById('blog-list');
                     blogList.innerHTML = '';
                     blogs.forEach(blog => {
-                        console.log('Blog user:', blog.user); // Логируем данные пользователя
                         let authorName = blog.user && blog.user.name ? blog.user.name : 'Don Carleone';
                         let blogItem = `
                     <a href="/Blog/${blog.id}" class="blog-link" data-id="${blog.id}">
                         <div class="blog-item">
                             <div class="content">
                                 <div class="user-profile">
-                                    <div class="logo" width="20" height="20">
-                                        <img class="rounded-circle shadow-1-strong me-3" src="/Assets/IMG/DefaultAvatar.png" alt="Logo" />
+                                    <div class="logo">
+                                        <img class="rounded-circle shadow-1-strong me-3" src="/Assets/IMG/DefaultAvatar.png" alt="Logo" width="20" height="20" />
                                     </div>
                                     <div class="author">${authorName}</div>
                                 </div>
@@ -275,7 +273,6 @@
                     console.error('Error fetching blogs by topic:', error);
                 });
         }
-
 
         document.addEventListener('DOMContentLoaded', function () {
             document.querySelectorAll('.blog-link').forEach(link => {

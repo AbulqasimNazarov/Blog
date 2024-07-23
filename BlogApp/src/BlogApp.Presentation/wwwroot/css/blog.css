@@ -324,7 +324,6 @@
 .author {
     font-size: 20px;
     font-weight: 400;
-    margin-bottom: 25px;
 }
 
 .title {
@@ -341,6 +340,13 @@
 
 .user-profile {
     display: flex;
+    margin-bottom: 25px;
+    align-items: center;
+}
+
+.user-profile img {
+    width: 50px;
+    height: 50px;
 }
 
 .blog-container {
