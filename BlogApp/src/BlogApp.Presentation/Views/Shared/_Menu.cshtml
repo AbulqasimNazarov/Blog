@@ -1,0 +1,103 @@
+@model IEnumerable<BlogApp.Core.Topic.Models.Topic>
+
+<div class="menu" id="menu" data-first-topic-id="@Model?.FirstOrDefault()?.Id">
+    <div class="menu-content menu-items dragscroll">
+        @if (Model != null)
+        {
+            @foreach (var topic in Model)
+            {
+                <a class="menu-item" id="topic-@topic.Id" href="javascript:void(0);"
+                   onclick="setActiveTopic(@topic.Id)">@topic.Name</a>
+            }
+        }
+    </div>
+</div>
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            fetchTopics();
+        });
+
+        function fetchTopics() {
+            const userId = '@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value';
+
+            fetch(`/Blog/Index/?userId=${userId}`)
+                .then(response => response.json())
+                .then(topics => {
+                    const menuContent = document.querySelector('.menu-content');
+                    menuContent.innerHTML = '';
+
+                    topics.forEach(topic => {
+                        const topicItem = document.createElement('a');
+                        topicItem.className = 'menu-item';
+                        topicItem.id = 'topic-' + topic.Id;
+                        topicItem.href = 'javascript:void(0);';
+                        topicItem.textContent = topic.Name;
+                        topicItem.onclick = function () {
+                            setActiveTopic(topic.Id);
+                        };
+                        menuContent.appendChild(topicItem);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching topics:', error);
+                });
+        }
+
+        document.querySelector('.addBlogForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+
+            fetch('/api/Blog/CreateBlog', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.ok ? alert('Blog created successfully') : response.text().then(text => { throw new Error(text); }))
+                .catch(error => console.error('Error:', error));
+        });
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const firstTopicId = document.getElementById('menu').getAttribute('data-first-topic-id');
+            if (firstTopicId) {
+                setActiveTopic(firstTopicId);
+            }
+        });
+
+        function setActiveTopic(topicId) {
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.getElementById('topic-' + topicId).classList.add('active');
+
+            fetch('/api/GetBlogsByTopic?topicId=' + topicId)
+                .then(response => response.json())
+                .then(blogs => {
+                    let blogList = document.getElementById('blog-list');
+                    blogList.innerHTML = '';
+                    blogs.forEach(blog => {
+                        let authorName = blog.user && blog.user.name ? blog.user.name : 'Don Carleone';
+                        let blogItem = `
+                    <a href="/Blog/${blog.id}" class="blog-link" data-id="${blog.id}">
+                        <div class="blog-item">
+                            <div class="content">
+                                <div class="user-profile">
+                                    <div class="logo">
+                                        <img class="rounded-circle shadow-1-strong me-3" src="/Assets/IMG/DefaultAvatar.png" alt="Logo" width="20" height="20" />
+                                    </div>
+                                    <div class="author">${authorName}</div>
+                                </div>
+                                <div class="title">${blog.title}</div>
+                                <div class="date">${new Date(blog.creationDate).toLocaleDateString()}</div>
+                            </div>
+                            <img class="blog-img" src="/Blog/Image/${blog.id}" alt="${blog.title}">
+                        </div>
+                    </a>`;
+                        blogList.innerHTML += blogItem;
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching blogs by topic:', error);
+                });
+        }
+    </script>
+}

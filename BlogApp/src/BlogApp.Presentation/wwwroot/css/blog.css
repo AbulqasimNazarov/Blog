@@ -324,7 +324,6 @@
 .author {
     font-size: 20px;
     font-weight: 400;
-    margin-bottom: 25px;
 }
 
 .title {
@@ -341,6 +340,13 @@
 
 .user-profile {
     display: flex;
+    margin-bottom: 25px;
+    align-items: center;
+}
+
+.user-profile img {
+    width: 50px;
+    height: 50px;
 }
 
 .blog-container {
@@ -350,11 +356,16 @@
 }
 
 .blog-right-side {
-    width: 300px;
+    width: 400px;
     color: white;
     padding: 20px;
     margin-top: -85px;
 }
+
+.right-side-list {
+    width: 400px;
+}
+
 
 .recommendation-block, .follow-block {
     margin-bottom: 20px;

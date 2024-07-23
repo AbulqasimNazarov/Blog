@@ -187,7 +187,8 @@ namespace BlogApp.Presentation.Controllers
             {
                 Email = email,
                 Name = name,
-                UserName = name
+                UserName = name,
+                AvatarUrl = "Assets/UserAvatar/DefaultAvatar.png"
             };
 
             var result = await userManager.CreateAsync(user);
