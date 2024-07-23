@@ -1,0 +1,128 @@
+@{
+    var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+}
+
+<div class="header">
+    <div class="header-block left-side">
+        <div class="logo">
+            <a href="/Blog/Index?userId=@userId"><img src="~/Assets/IMG/LogoImg.png" alt="Logo" /></a>
+        </div>
+        <div class="search-container">
+            <form id="searchForm" class="search-bar" method="get" action="api/Blog/SearchBlogsByName">
+                <input type="text" name="query" placeholder="Search">
+                <button type="submit">
+                    <img src="~/Assets/IMG/search-icon.png" alt="Search">
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="header-block right-side">
+        <div id="addBlogButton" class="add-blog add-blog-button">
+            <a href="#">
+                <img src="~/Assets/IMG/Plus.png" alt="Plus">
+                Add blog
+            </a>
+        </div>
+        <div id="addBlogModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Add Blog</h2>
+                <form class="addBlogForm" method="post" action="/api/Blog/CreateBlog" enctype="multipart/form-data">
+                    <div class="blog-picture">
+                        <label class="blog-picture-title" for="pictureUrl">Add picture:</label>
+                        <div class="custom-file">
+                            <input type="file" name="image" class="custom-file-input" required>
+                            <label class="custom-file-label" for="picture">Choose file</label>
+                        </div>
+                    </div>
+                    <div class="blog-title">
+                        <label for="title">Title:</label>
+                        <input type="text" class="input-title" name="Title" required>
+                    </div>
+                    <div class="blog-topic">
+                        <label for="topicId">Topic:</label>
+                        <select class="topicId" name="TopicId" required>
+                            @if (Model != null)
+                            {
+                                @foreach (var topic in Model)
+                                {
+                                    <option value="@topic.Id">@topic.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="blog-text">
+                        <label for="text">Text:</label>
+                        <textarea name="Text" required></textarea>
+                    </div>
+                    <button type="submit">Add Blog</button>
+                </form>
+            </div>
+        </div>
+        <div class="icons">
+            <a href="#">
+                <img src="~/Assets/IMG/ChatCircleDots.png" alt="">
+            </a>
+            <a href="#">
+                <img src="~/Assets/IMG/Export.png" alt="">
+            </a>
+        </div>
+        <div class="profile">
+            <a href="#">
+                <img src="~/Assets/IMG/profile_image.png" alt="profile">
+            </a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const query = document.querySelector('input[name="query"]').value;
+            searchBlogsByName(query);
+        });
+
+        function searchBlogsByName(query) {
+            fetch(`/api/Blog/SearchBlogsByName?name=${encodeURIComponent(query)}`, {
+                method: 'GET'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    const blogList = document.getElementById('blog-list');
+                    blogList.innerHTML = '';
+                    data.forEach(blog => {
+                        const blogItem = `
+                            <a href="/Blog/${blog.id}" class="blog-link" data-id="${blog.id}">
+                                <div class="blog-item">
+                                    <div class="content">
+                                        <div class="author">${blog.User ? blog.User.UserName : `Unknown`}</div>
+                                        <div class="title">${blog.title}</div>
+                                        <div class="date">${new Date(blog.creationDate).toLocaleDateString()}</div>
+                                    </div>
+                                    <img class="blog-img" src="/Blog/Image/${blog.id}" alt="${blog.title}">
+                                </div>
+                            </a>`;
+                        blogList.innerHTML += blogItem;
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to search blogs');
+                });
+        }
+
+        document.querySelector('.addBlogForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+
+            fetch('/api/Blog/CreateBlog', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.ok ? alert('Blog created successfully') : response.text().then(text => { throw new Error(text); }))
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+}
