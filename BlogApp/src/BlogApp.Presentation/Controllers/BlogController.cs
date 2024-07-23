@@ -34,13 +34,13 @@ public class BlogController : Controller
             return foundBlogs;
         }
         catch (Exception)
-        {   
+        {
             return null;
         }
     }
 
-    [HttpGet("api/GetBlogsByTopic")]
-    public async Task<IEnumerable<Blog?>?> GetBlogsByTopic(int topicId)
+    [HttpGet("api/GetBlogsByTopic/")]
+    public async Task<ActionResult<IEnumerable<Blog>>> GetBlogsByTopic(int topicId)
     {
         try
         {
@@ -51,13 +51,27 @@ public class BlogController : Controller
 
             var blogs = await sender.Send(getAllByTopicIdQuery);
 
-            return blogs;
+            if (blogs == null || !blogs.Any())
+            {
+                return NotFound("Blogs not found");
+            }
+
+            // Проверьте данные перед отправкой на клиент
+            foreach (var blog in blogs)
+            {
+                Console.WriteLine($"API Blog: {blog.Title}, User: {blog.User?.Name}");
+            }
+
+            return Ok(blogs);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            return null;
+            Console.Error.WriteLine($"Error fetching blogs: {ex.Message}");
+            return StatusCode(500, "Internal server error");
         }
     }
+
+
 
     [HttpGet("Blog/Index")]
     public async Task<IActionResult> Index(int userId)
@@ -68,12 +82,12 @@ public class BlogController : Controller
             {
                 UserId = userId,
             };
-        
+
             var preferableTopics = await sender.Send(getAllTopicsByUserIdQuery);
-            
+
             return View(preferableTopics);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             return StatusCode(500, ex.Message);
         }
@@ -99,7 +113,7 @@ public class BlogController : Controller
         {
             return BadRequest(ex.Message);
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             return StatusCode(500, ex.Message);
         }
@@ -107,7 +121,7 @@ public class BlogController : Controller
 
 
     [HttpGet("[controller]/[action]/{id}")]
-    public async Task<IActionResult> Image(int id) 
+    public async Task<IActionResult> Image(int id)
     {
         try
         {
@@ -124,7 +138,7 @@ public class BlogController : Controller
             var fileStream = System.IO.File.Open(blog.PictureUrl!, FileMode.Open);
             return File(fileStream, "image/jpeg");
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             System.Console.WriteLine(ex.Message);
             return null;
@@ -146,7 +160,8 @@ public class BlogController : Controller
             };
 
             var blog = await sender.Send(getBlogQuery);
-            if (blog != null){
+            if (blog != null)
+            {
                 randomId = Random.Shared.Next(1, 100000);
             }
             newBlog.Id = randomId;
@@ -158,7 +173,7 @@ public class BlogController : Controller
             using var newFileStream = System.IO.File.Create(newBlog.PictureUrl);
             await image.CopyToAsync(newFileStream);
 
-             newBlog.CreationDate = DateTime.UtcNow;
+            newBlog.CreationDate = DateTime.UtcNow;
 
             var createCommand = new CreateCommand()
             {
@@ -168,7 +183,7 @@ public class BlogController : Controller
                 TopicId = newBlog.TopicId,
                 PictureUrl = newBlog.PictureUrl,
                 CreationDate = newBlog.CreationDate,
-                
+
             };
 
             await sender.Send(createCommand);

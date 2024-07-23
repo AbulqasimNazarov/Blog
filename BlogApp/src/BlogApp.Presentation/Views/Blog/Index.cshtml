@@ -99,7 +99,7 @@
 
 
         <div class="blog-right-side">
-            @if (!isBlogDetail) 
+            @if (!isBlogDetail)
             {
                 <div class="recommendation-block">
                     <h2>Recommended topics</h2>
@@ -158,7 +158,7 @@
                 })
                 .catch(error => {
                     console.error('Error fetching topics:', error);
-            });
+                });
         });
 
         document.getElementById('searchForm').addEventListener('submit', function (event) {
@@ -171,42 +171,42 @@
             fetch(`/api/Blog/SearchBlogsByName?name=${encodeURIComponent(query)}`, {
                 method: 'GET'
             })
-            .then(response => {
-                console.log('Response status:', response.status);
-                if (!response.ok) {
-                    return response.text().then(text => { throw new Error(text); });
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Data received:', data);
+                .then(response => {
+                    console.log('Response status:', response.status);
+                    if (!response.ok) {
+                        return response.text().then(text => { throw new Error(text); });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Data received:', data);
 
-                const blogList = document.getElementById('blog-list');
-                blogList.innerHTML = '';
+                    const blogList = document.getElementById('blog-list');
+                    blogList.innerHTML = '';
 
-                document.querySelectorAll('.menu-item').forEach(item => {
-                    item.classList.remove('active');
+                    document.querySelectorAll('.menu-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+
+                    data.forEach(blog => {
+                        const blogItem = `
+                            <a href="/Blog/${blog.id}" class="blog-link" data-id="${blog.id}">
+                                <div class="blog-item">
+                                    <div class="content">
+                                        <div class="author">${blog.User ? blog.User.UserName : `Unknown`}</div>
+                                        <div class="title">${blog.title}</div>
+                                        <div class="date">${new Date(blog.creationDate).toLocaleDateString()}</div>
+                                    </div>
+                                    <img class="blog-img" src="/Blog/Image/${blog.id}" alt="${blog.title}">
+                                </div>
+                            </a>`;
+                        blogList.innerHTML += blogItem;
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to search blogs');
                 });
-
-                data.forEach(blog => {
-                    const blogItem = `
-                    <a href="/Blog/${blog.id}" class="blog-link" data-id="${blog.id}">
-                        <div class="blog-item">
-                            <div class="content">
-                                <div class="author">${blog.User ? blog.User.UserName : `Unknown`}</div>
-                                <div class="title">${blog.title}</div>
-                                <div class="date">${new Date(blog.creationDate).toLocaleDateString()}</div>
-                            </div>
-                            <img class="blog-img" src="/Blog/Image/${blog.id}" alt="${blog.title}">
-                        </div>
-                    </a>`;
-                    blogList.innerHTML += blogItem;
-                });
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Failed to search blogs');
-            });
         });
 
         document.querySelector('.addBlogForm').addEventListener('submit', function (event) {
@@ -244,27 +244,30 @@
             document.getElementById('topic-' + topicId).classList.add('active');
 
             fetch('/api/GetBlogsByTopic?topicId=' + topicId)
-                .then(response => response.json())  
+                .then(response => response.json())
                 .then(blogs => {
+                    console.log('Received blogs:', blogs); // Логируем полученные данные
                     let blogList = document.getElementById('blog-list');
                     blogList.innerHTML = '';
                     blogs.forEach(blog => {
+                        console.log('Blog user:', blog.user); // Логируем данные пользователя
+                        let authorName = blog.user && blog.user.name ? blog.user.name : 'Don Carleone';
                         let blogItem = `
-                        <a href="/Blog/${blog.id}" class="blog-link" data-id="${blog.id}">
-                            <div class="blog-item">
-                                <div class="content">
-                                    <div class="user-profile">
-                                        <div class="logo">
-                                            <img src="~/Assets/IMG/LogoImg.png" alt="Logo" />
-                                        </div>
-                                        <div class="author">${blog.User ? blog.User.Name : 'Abulqasim'}</div>
+                    <a href="/Blog/${blog.id}" class="blog-link" data-id="${blog.id}">
+                        <div class="blog-item">
+                            <div class="content">
+                                <div class="user-profile">
+                                    <div class="logo" width="20" height="20">
+                                        <img class="rounded-circle shadow-1-strong me-3" src="/Assets/IMG/DefaultAvatar.png" alt="Logo" />
                                     </div>
-                                    <div class="title">${blog.title}</div>
-                                    <div class="date">${new Date(blog.creationDate).toLocaleDateString()}</div>
+                                    <div class="author">${authorName}</div>
                                 </div>
-                                <img class="blog-img" src="/Blog/Image/${blog.id}" alt="${blog.title}">
+                                <div class="title">${blog.title}</div>
+                                <div class="date">${new Date(blog.creationDate).toLocaleDateString()}</div>
                             </div>
-                        </a>`;
+                            <img class="blog-img" src="/Blog/Image/${blog.id}" alt="${blog.title}">
+                        </div>
+                    </a>`;
                         blogList.innerHTML += blogItem;
                     });
                 })
@@ -272,6 +275,7 @@
                     console.error('Error fetching blogs by topic:', error);
                 });
         }
+
 
         document.addEventListener('DOMContentLoaded', function () {
             document.querySelectorAll('.blog-link').forEach(link => {
@@ -288,14 +292,14 @@
 
                             const blogDetail = document.getElementById('blogDetail');
                             blogDetail.innerHTML = `
-                            <h1>${blog.title}</h1>
-                            <p>${new Date(blog.creationDate).toLocaleDateString()}</p>
-                            <p>Author: ${blog.User ? blog.User.Name : 'Unknown'}</p>
-                            <img src="${blog.pictureUrl}" alt="${blog.title}">
-                            <div class="blog-content">
-                                <p>${blog.text}</p>
-                            </div>
-                        `;
+                                    <h1>${blog.title}</h1>
+                                    <p>${new Date(blog.creationDate).toLocaleDateString()}</p>
+                                    <p>Author: ${blog.User ? blog.User.Name : 'Unknown'}</p>
+                                    <img src="${blog.pictureUrl}" alt="${blog.title}">
+                                    <div class="blog-content">
+                                        <p>${blog.text}</p>
+                                    </div>
+                                `;
                         })
                         .catch(error => {
                             console.error('Error fetching blog details:', error);
