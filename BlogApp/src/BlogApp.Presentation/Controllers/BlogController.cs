@@ -105,6 +105,13 @@ public class BlogController : Controller
             };
 
             var blog = await sender.Send(getBlogQuery);
+
+            // Проверка, если запрос поступил как AJAX (ожидаем JSON ответ)
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return Json(blog);
+            }
+
             ViewBag.Blog = blog;
             ViewBag.IsBlogDetail = true;
             return View("Index");
@@ -118,6 +125,8 @@ public class BlogController : Controller
             return StatusCode(500, ex.Message);
         }
     }
+
+
 
 
     [HttpGet("[controller]/[action]/{id}")]
