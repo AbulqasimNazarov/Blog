@@ -356,11 +356,16 @@
 }
 
 .blog-right-side {
-    width: 300px;
+    width: 400px;
     color: white;
     padding: 20px;
     margin-top: -85px;
 }
+
+.right-side-list {
+    width: 400px;
+}
+
 
 .recommendation-block, .follow-block {
     margin-bottom: 20px;

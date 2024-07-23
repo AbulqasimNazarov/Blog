@@ -1,59 +1,35 @@
-@model IEnumerable<BlogApp.Core.Topic.Models.Topic>
+@model BlogApp.Core.Blog.Models.Blog
 
 @{
-    ViewData["Title"] = "Blogs";
+    ViewData["Title"] = Model?.Title ?? "Blog Details";
+    var topics = ViewBag.Topics as IEnumerable<BlogApp.Core.Topic.Models.Topic>;
+        var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
 }
 
-<div class="blog-page">
-    @await Html.PartialAsync("_Header")
-    <div class="menu" id="menu" data-first-topic-id="@Model?.FirstOrDefault()?.Id">
-        <div class="menu-content menu-items dragscroll">
-            @if (Model != null)
-            {
-                @foreach (var topic in Model)
-                {
-                    <a class="menu-item" id="topic-@topic.Id" href="javascript:void(0);"
-                        onclick="setActiveTopic(@topic.Id)">@topic.Name</a>
-                }
-            }
-        </div>
-    </div>
+<div class="blog-page" style="color: #fff;">
+    @await Html.PartialAsync("_Header", topics)
+    @await Html.PartialAsync("_Menu", topics)
+
     <div class="blog-container">
-        <div class="blog-list" id="blog-list"></div>
-        <div class="blog-right-side">
-            <div class="recommendation-block">
-                <h2>Recommended topics</h2>
-                <div class="recommendation-block-topics">
-                    <button>Photography</button>
-                    <button>Poetry</button>
-                    <button>Space</button>
-                    <button>Money</button>
-                </div>
-            </div>
-            <div class="follow-block">
-                <h2>Who to follow</h2>
-                <div class="person">
-                    <h5>Aamatullah Rajkotwala</h5>
-                    <p>I like to write about movies, literature, pop culture and...</p>
-                    <button class="follow-button">Follow</button>
-                </div>
-                <div class="person">
-                    <h5>Marvel Gomulya</h5>
-                    <p>Indonesian Builder! Writings about philosophy, human...</p>
-                    <button class="follow-button">Follow</button>
-                </div>
-                <div class="person">
-                    <h5>Natasha MH</h5>
-                    <p>Writes on life, Travel, inspiration and Culture.</p>
-                    <button class="follow-button">Follow</button>
-                </div>
-            </div>
+        <div class="blog-details">
+        <div class="blog-header">
+            <h1 style="text-align: center; margin-bottom: 25px; margin-top: 25px;">@Model.Title</h1>
+        </div>
+        <div class="blog-image">
+            <img src="/Blog/Image/@Model.Id" alt="@Model.Title" width="700" height="700"/>
+        </div>
+        <div class="blog-content" style="width: 700px; text-aling: center; margin-top: 25px">
+            @Html.Raw(Model.Text)
+            <p style="color: #333;">by @Model.User?.UserName on @Model.CreationDate</p>
         </div>
     </div>
+        <div class="blog-right-side">
+            <div class="blog-list right-side-list" id="blog-list"></div>
+    </div>
+
 </div>
 
-@section Scripts {
-    <script>
+<script>
         document.addEventListener('DOMContentLoaded', function () {
             const userId = '@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value';
 
@@ -193,4 +169,3 @@
                 });
         }
     </script>
-}

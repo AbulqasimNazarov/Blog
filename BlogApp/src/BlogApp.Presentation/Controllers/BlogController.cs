@@ -8,6 +8,7 @@ using MediatR;
 using BlogApp.Infrastructure.Blog.Commands;
 using Microsoft.AspNetCore.Authorization;
 using BlogApp.Infrastructure.UserTopic.Queries;
+using BlogApp.Infrastructure.Topic.Queries;
 
 public class BlogController : Controller
 {
@@ -99,15 +100,31 @@ public class BlogController : Controller
     {
         try
         {
-            var getBlogQuery = new GetByIdQuery()
+            var getBlogQuery = new BlogApp.Infrastructure.Blog.Queries.GetByIdQuery()
             {
                 Id = blogId,
             };
 
             var blog = await sender.Send(getBlogQuery);
-            ViewBag.Blog = blog;
-            ViewBag.IsBlogDetail = true;
-            return View("Index");
+                var getAllTopicsQuery = new BlogApp.Infrastructure.Topic.Queries.GetAllQuery();
+
+
+                var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "0");
+
+        // Получите темы для текущего пользователя
+                var getAllTopicsByUserIdQuery = new BlogApp.Infrastructure.UserTopic.Queries.GetAllTopicsByUserIdQuery
+                {
+                    UserId = userId,
+                };
+                var topics = await sender.Send(getAllTopicsByUserIdQuery);
+
+                ViewBag.Topics = topics;
+
+
+
+                
+
+            return View(blog);
         }
         catch (ArgumentException ex)
         {
@@ -125,7 +142,7 @@ public class BlogController : Controller
     {
         try
         {
-            var blogQuery = new GetByIdQuery
+            var blogQuery = new BlogApp.Infrastructure.Blog.Queries.GetByIdQuery
             {
                 Id = id,
 
@@ -154,7 +171,7 @@ public class BlogController : Controller
         {
             var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value ?? "0");
             var randomId = Random.Shared.Next(1, 100000);
-            var getBlogQuery = new GetByIdQuery()
+            var getBlogQuery = new BlogApp.Infrastructure.Blog.Queries.GetByIdQuery()
             {
                 Id = randomId,
             };
