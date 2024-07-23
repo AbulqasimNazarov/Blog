@@ -50,7 +50,7 @@ public class BlogController : Controller
             };
 
             var blogs = await sender.Send(getAllByTopicIdQuery);
-            
+
             return blogs;
         }
         catch (Exception)
@@ -92,7 +92,7 @@ public class BlogController : Controller
 
             var blog = await sender.Send(getBlogQuery);
             ViewBag.Blog = blog;
-
+            ViewBag.IsBlogDetail = true;
             return View("Index");
         }
         catch (ArgumentException ex)
@@ -109,18 +109,26 @@ public class BlogController : Controller
     [HttpGet("[controller]/[action]/{id}")]
     public async Task<IActionResult> Image(int id) 
     {
-        var blogQuery = new GetByIdQuery
+        try
         {
-            Id = id,
-            
-        };
-        var blog = await this.sender.Send(blogQuery);
-        if (blog == null || string.IsNullOrEmpty(blog.PictureUrl))
-        {
-            return NotFound("Blog or image not found.");
+            var blogQuery = new GetByIdQuery
+            {
+                Id = id,
+
+            };
+            var blog = await this.sender.Send(blogQuery);
+            if (blog == null || string.IsNullOrEmpty(blog.PictureUrl))
+            {
+                return NotFound("Blog or image not found.");
+            }
+            var fileStream = System.IO.File.Open(blog.PictureUrl!, FileMode.Open);
+            return File(fileStream, "image/jpeg");
         }
-        var fileStream = System.IO.File.Open(blog.PictureUrl!, FileMode.Open);
-        return File(fileStream, "image/jpeg");
+        catch(Exception ex)
+        {
+            System.Console.WriteLine(ex.Message);
+            return null;
+        }
     }
 
 

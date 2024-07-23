@@ -93,9 +93,10 @@
     </div>
 
     <div class="blog-container">
-        <div class="blog-list" id="blog-list" style="display: block;"></div>
+        <div class="blog-list" id="blog-list" style="@(isBlogDetail ? "display: none;" : "display: block;")"></div>
 
-        <div id="blogDetail" class="blog-detail" style="display: none;"></div>
+        <div id="blogDetail" class="blog-detail" style="@(isBlogDetail ? "display: block;" : "display: none;")"></div>
+
 
         <div class="blog-right-side">
             @if (!isBlogDetail) 
@@ -157,7 +158,7 @@
                 })
                 .catch(error => {
                     console.error('Error fetching topics:', error);
-                });
+            });
         });
 
         document.getElementById('searchForm').addEventListener('submit', function (event) {
@@ -192,7 +193,7 @@
                     <a href="/Blog/${blog.id}" class="blog-link" data-id="${blog.id}">
                         <div class="blog-item">
                             <div class="content">
-                                <div class="author">${blog.user ? blog.user.name : 'Unknown'}</div>
+                                <div class="author">${blog.User ? blog.User.UserName : `Unknown`}</div>
                                 <div class="title">${blog.title}</div>
                                 <div class="date">${new Date(blog.creationDate).toLocaleDateString()}</div>
                             </div>
@@ -243,7 +244,7 @@
             document.getElementById('topic-' + topicId).classList.add('active');
 
             fetch('/api/GetBlogsByTopic?topicId=' + topicId)
-                .then(response => response.json())
+                .then(response => response.json())  
                 .then(blogs => {
                     let blogList = document.getElementById('blog-list');
                     blogList.innerHTML = '';
@@ -289,7 +290,7 @@
                             blogDetail.innerHTML = `
                             <h1>${blog.title}</h1>
                             <p>${new Date(blog.creationDate).toLocaleDateString()}</p>
-                            <p>Author: ${blog.user ? blog.user.name : 'Unknown'}</p>
+                            <p>Author: ${blog.User ? blog.User.Name : 'Unknown'}</p>
                             <img src="${blog.pictureUrl}" alt="${blog.title}">
                             <div class="blog-content">
                                 <p>${blog.text}</p>
